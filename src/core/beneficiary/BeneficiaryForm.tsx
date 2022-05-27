@@ -27,6 +27,7 @@ interface BeneficiaryFormInterface extends ModalProps {
   title?: string;
   saveText?: string;
   beneficiary?: BeneficiaryPayload | undefined;
+  fetchAllBeneficiaries: Function;
 }
 const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
   const [relations, setRelations] = useState([]);
@@ -38,14 +39,17 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
     formikHelpers: FormikHelpers<BeneficiaryPayload>
   ) => {
     formikHelpers.setSubmitting(true);
-    await dispatchEvent(
+    let response = await dispatchEvent(
       "BENEFICIARY_CREATE",
       values,
       {},
       formikHelpers.setErrors
     );
     formikHelpers.setSubmitting(false);
-    props.handleClose();
+    if (response.success) {
+      props.handleClose();
+      props.fetchAllBeneficiaries();
+    }
   };
 
   useEffect(() => {
@@ -75,6 +79,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
         handleBlur,
         handleChange,
         isSubmitting,
+        values,
         resetForm,
       }) => (
         <Modal size="lg" isOpen={props.isOpen} onClosed={resetForm}>
@@ -91,6 +96,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       placeholder="Enter Receiver name"
                       errors={errors}
                       touched={touched}
+                      value={values.name}
                       onChange={handleChange}
                       invalid={errors.name && touched.name ? true : false}
                       onBlur={handleBlur}
@@ -108,6 +114,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       name="phone"
                       placeholder="Enter Receiver Phone"
                       errors={errors}
+                      value={values.phone}
                       touched={touched}
                       onChange={handleChange}
                       invalid={errors.phone && touched.phone ? true : false}
@@ -126,6 +133,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                   name="address"
                   placeholder="Enter Receiver Address"
                   errors={errors}
+                  value={values.address}
                   touched={touched}
                   onChange={handleChange}
                   invalid={errors.address && touched.address ? true : false}
@@ -145,6 +153,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       type="select"
                       placeholder="Select District"
                       errors={errors}
+                      value={values.district_id}
                       touched={touched}
                       onChange={handleChange}
                       invalid={
@@ -174,6 +183,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       placeholder="Select Relation"
                       errors={errors}
                       touched={touched}
+                      value={values.relationship_id}
                       onChange={handleChange}
                       invalid={
                         errors.relationship_id && touched.relationship_id
@@ -202,6 +212,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                     <Input
                       id="bank_id"
                       name="bank_id"
+                      value={values.bank_id}
                       type="select"
                       placeholder="Select Bank"
                       errors={errors}
@@ -229,6 +240,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       id="branch"
                       name="branch"
                       type="text"
+                      value={values.branch}
                       placeholder="Enter Bank Branch"
                       errors={errors}
                       touched={touched}
@@ -253,6 +265,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       placeholder="Enter A/C Name"
                       errors={errors}
                       touched={touched}
+                      value={values.account_name}
                       onChange={handleChange}
                       invalid={
                         errors.account_name && touched.account_name
@@ -275,6 +288,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                       type="text"
                       placeholder="Enter A/C No."
                       errors={errors}
+                      value={values.account_number}
                       touched={touched}
                       onChange={handleChange}
                       invalid={

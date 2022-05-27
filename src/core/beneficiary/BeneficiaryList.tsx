@@ -40,14 +40,17 @@ const BeneficiaryList = () => {
     }
   };
 
+  // 9845816966;
   return (
     <div className="beneficiary-screen box">
       <BeneficiaryForm
         isOpen={showModal}
         handleClose={handleModalClose}
         beneficiary={beneficiary}
+        saveText={beneficiary ? "Update" : "Create"}
+        fetchAllBeneficiaries={fetchAllBeneficiaries}
       />
-      <Col className="my-3">
+      <Col className="my-3 d-flex justify-content-end">
         <Button
           title="Add Beneficiary"
           className="btn-sm btn-primary pull-right"

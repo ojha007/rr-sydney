@@ -1,4 +1,4 @@
-enum FormMethod {
+export enum FormMethod {
   POST = "POST",
   GET = "GET",
   DELETE = "DELETE",
@@ -13,6 +13,7 @@ export interface ApiInformationType {
 }
 
 export const BackendRoute = {
+  //============START AUTH ROUTES==================
   LOGIN: {
     url: "/login",
     method: FormMethod.POST,
@@ -28,7 +29,7 @@ export const BackendRoute = {
     method: FormMethod.POST,
     auth: false,
   },
-
+  //==============END AUTH ROUTES===========
   BENEFICIARY_LIST: {
     url: "/beneficiary",
     method: FormMethod.GET,
@@ -68,39 +69,23 @@ export const BackendRoute = {
     url: "send-money",
     method: FormMethod.POST,
     auth: true,
+    requestType: "formData",
   },
-
-  // BENEFICIARY: {
-  //   CREATE: {
-  //     url: "/forget-password",
-  //     method: FormMethod.POST,
-  //   },
-  //   delete: {},
-  //   update: {},
-  //   view: {
-  //     url: "/forget-password",
-  //     method: FormMethod.POST,
-  //   },
-  // },
-  // transaction: {
-  //   history: {},
-  // },
-  // sendMoney: {
-  //   create: {},
-  //   view: {},
-  //   export: {},
-  //   update: {},
-  // },
-  // profile: {
-  //   create: {},
-  //   update: {},
-  // },
-  // address: {
-  //   create: {},
-  //   update: {},
-  // },
-  // kyc: {
-  //   create: {},
-  //   update: {},
-  // },
+  USER_KYC: {
+    url: "/user/kyc",
+    method: FormMethod.GET,
+    auth: true,
+  },
+  KYC_POST: {
+    url: "/user/kyc",
+    method: FormMethod.POST,
+    auth: true,
+    requestType: "formData",
+  },
+  UPDATE_PROFILE: {
+    url: "update-profile",
+    method: FormMethod.POST,
+    auth: true,
+    requestType: "formData",
+  },
 };

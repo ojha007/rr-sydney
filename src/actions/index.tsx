@@ -1,10 +1,12 @@
 import { FormikErrors } from "formik";
+import { toast } from "react-toastify";
+
 import {
   ErrorResponse,
   makeApiRequest,
   SuccessResponse,
 } from "../helpers/apiRequest";
-import { BackendRoute } from "../routes/backend.route";
+import { BackendRoute, FormMethod } from "../routes/backend.route";
 import TokenService from "../services/TokenService";
 
 interface RequestParam {
@@ -29,15 +31,22 @@ export const dispatchEvent = async (
     payload
   );
   if (response.success) {
+    if (api.method === FormMethod.POST) {
+      console.log(response);
+      toast.success(response.message);
+    }
+
     if (action === "LOGIN") {
       TokenService.setToken(response.data);
     }
   } else {
+    if (response.message) {
+      toast.error(response.message);
+    }
     if (serverErrors) {
       console.log(response);
-      let errors = response.data.errors || {};
+      let errors = response.errors || {};
       serverErrors(errors);
-      console.log(errors);
     }
   }
   return response;

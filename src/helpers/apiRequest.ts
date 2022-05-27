@@ -9,14 +9,12 @@ export interface ErrorResponse {
   message: string;
   status: number;
   success: false;
-  // type: "error";
 }
 export interface SuccessResponse {
   data: any;
   message: string;
   status: number;
   success: true;
-  // type: "success";
 }
 
 // Auth and URL configs
@@ -82,7 +80,9 @@ const transformRequestData = (
   return transformedRequestData;
 };
 
-let handleErrorResponse = (error: AxiosError): ErrorResponse => {
+let handleErrorResponse = (
+  error: AxiosError<ErrorResponse, any>
+): ErrorResponse => {
   let errorResponse: ErrorResponse = {
     message: "Error",
     data: null,
@@ -91,12 +91,14 @@ let handleErrorResponse = (error: AxiosError): ErrorResponse => {
     success: false,
   };
   if (error.response) {
-    errorResponse.status = error.response.status; // The server responded with a status code
-    errorResponse.data = error.response.data; // The server responded with a status code and data
+    errorResponse.errors = error.response.data.errors;
+    errorResponse.status = error.response.status;
+    errorResponse.data = error.response.data.data;
+    if (typeof error.response.data) {
+      errorResponse.message = error.response.data.message;
+    }
   } else if (error.request) {
     errorResponse.message = "Server could not be reached.";
-  } else {
-    errorResponse.message = error.message; // Something happened in setting up the request that triggered an Error
   }
   return errorResponse;
 };
@@ -109,5 +111,6 @@ let handleSuccessResponse = (response: AxiosResponse): SuccessResponse => {
     success: true,
   };
   successResponse.data = response.data.data;
+  successResponse.message = response.data.message;
   return successResponse;
 };

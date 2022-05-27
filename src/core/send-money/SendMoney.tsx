@@ -9,14 +9,18 @@ import {
   TransactionSchema,
 } from "../../schema/transaction.schema";
 import Button from "../../components/LoadingButton";
+import { FilesUpload } from "../../components/FileUploader";
 
 const SendMoney = () => {
   const [beneficiaries, setBeneficiaries] = useState<Array<IOption>>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
   const handleOnSubmit = async (
     values: TransactionPayload,
     formikHelpers: FormikHelpers<TransactionPayload>
   ) => {
     console.log(values);
+    values.files = uploadedFiles;
     formikHelpers.setSubmitting(true);
     await dispatchEvent("SEND_MONEY", values, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
@@ -55,7 +59,7 @@ const SendMoney = () => {
           handleBlur,
           handleChange,
           isSubmitting,
-          resetForm,
+          values,
         }) => (
           <Form autoComplete="off">
             <div className="box-body">
@@ -120,6 +124,7 @@ const SendMoney = () => {
                       type="text"
                       readOnly
                       name="rate"
+                      value={values.rate}
                       placeholder="Today Rate"
                       errors={errors}
                       touched={touched}
@@ -137,9 +142,10 @@ const SendMoney = () => {
                   <FormGroup>
                     <Label for="rate">Service Charge (AUD)</Label>
                     <Input
-                      type="text"
+                      type="number"
                       readOnly
                       name="charge"
+                      value={values.charge}
                       placeholder="Service Charge"
                       errors={errors}
                       touched={touched}
@@ -161,6 +167,7 @@ const SendMoney = () => {
                     <Input
                       type="text"
                       readOnly
+                      value={values.receiving_amount}
                       name="receiving_amount"
                       placeholder="Receiving Amount"
                       errors={errors}
@@ -181,26 +188,11 @@ const SendMoney = () => {
                 </Col>
               </Row>
               <Row>
-                <Col md={6}>
-                  <FormGroup>
-                    <Label for="rate">Payment Screenshot</Label>
-                    <Input
-                      type="file"
-                      name="files[]"
-                      errors={errors}
-                      multiple
-                      touched={touched}
-                      onChange={handleChange}
-                      accept="image/png,image/jpg,image/jpeg"
-                      invalid={errors.files && touched.files ? true : false}
-                      onBlur={handleBlur}
-                    />
-
-                    {errors.files && touched.files ? (
-                      <FormFeedback>File is required</FormFeedback>
-                    ) : null}
-                  </FormGroup>
-                </Col>
+                <Label>Upload your Payment screenshot</Label>
+                <FilesUpload
+                  setUploadedFiles={setUploadedFiles}
+                  uploadedFiles={uploadedFiles}
+                />
               </Row>
             </div>
             <div className="box-footer justify-content-between ">
