@@ -35,7 +35,6 @@ export const dispatchEvent = async (
       console.log(response);
       toast.success(response.message);
     }
-
     if (action === "LOGIN") {
       TokenService.setToken(response.data);
     }

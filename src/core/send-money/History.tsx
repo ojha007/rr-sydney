@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
 import { dispatchEvent } from "../../actions";
+import { HistoryList } from "./HistoryList";
 
 const History = () => {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState({});
   const [isLoading, setLoading] = useState(true);
   const fetchAllTransaction = async () => {
     setLoading(true);
@@ -19,13 +20,13 @@ const History = () => {
   return (
     <div className="box">
       <div className="box-header">Your Transaction History</div>
-      <div className="box-body">
+      <div className="box-body p-0">
         {isLoading ? (
           <div className="text-center">
             <Spinner />
           </div>
-        ) : transactions.length ? (
-          ""
+        ) : Object.keys(transactions).length > 0 ? (
+          <HistoryList transactions={transactions} />
         ) : (
           <p className="text-center text-bold">
             No Record Found. <br />

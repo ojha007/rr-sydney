@@ -13,7 +13,7 @@ const Profile = () => {
       <Nav tabs className="tab-03 mt-2 px-4">
         <NavItem>
           <NavLink
-            className={currentTab == "KYC" ? "active" : ""}
+            className={currentTab === "KYC" ? "active" : ""}
             onClick={() => setCurrentTab("KYC")}
           >
             Manage Your Kyc
@@ -21,7 +21,7 @@ const Profile = () => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={currentTab == "SETTING" ? "active" : ""}
+            className={currentTab === "SETTING" ? "active" : ""}
             onClick={() => setCurrentTab("SETTING")}
           >
             Profile
@@ -29,7 +29,7 @@ const Profile = () => {
         </NavItem>
         <NavItem>
           <NavLink
-            className={currentTab == "CHANGE_PASSWORD" ? "active" : ""}
+            className={currentTab === "CHANGE_PASSWORD" ? "active" : ""}
             onClick={() => setCurrentTab("CHANGE_PASSWORD")}
           >
             Change Password

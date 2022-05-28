@@ -5,7 +5,20 @@ import {
   ClockHistory,
   PeopleFill,
 } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath, useMatch, LinkProps } from "react-router-dom";
+import TokenService from "../../services/TokenService";
+
+function SidebarLink({ children, to, ...props }: LinkProps) {
+  let resolved = useResolvedPath(to);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  return (
+    <Link className={`nav-link ${match ? "active" : ""}`} to={to} {...props}>
+      {children}
+    </Link>
+  );
+}
+
 export default function LeftContent() {
   return (
     <div
@@ -14,49 +27,51 @@ export default function LeftContent() {
     >
       <div className="text-center">
         <img
-          src="https://registeredremit.com.au/storage/users/avatar/63e78111-6854-4944-a4ca-3a838a3fcca21651650766.png"
-          className="img-responsive"
+          src={TokenService.getAuthUser()?.avatar}
+          className="img-circle"
           alt=""
         />
       </div>
-      <h3 className="profile-username text-center">Administration</h3>
-      <p className="text-muted text-center m-1">admin@registeredremit.com.au</p>
-      <p className="text-muted text-center m-1">0424451758</p>
-      <Link
-        to="/home"
-        className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
-      ></Link>
+      <h3 className="profile-username text-center">
+        {TokenService.getAuthUser().name}
+      </h3>
+      <p className="text-muted text-center m-1 mt-0">
+        {TokenService.getAuthUser().email}
+      </p>
+      <p className="text-muted text-center m-1 mt-0">
+        {TokenService.getAuthUser().phone}
+      </p>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item ">
-          <Link to="/dashboard" className="nav-link active" aria-current="page">
+          <SidebarLink to="/dashboard" aria-current="page">
             <Speedometer2 className="bi me-2" />
             Dashboard
-          </Link>
+          </SidebarLink>
         </li>
         <li className="nav-item">
-          <Link to="send-money" className="nav-link " aria-current="page">
+          <SidebarLink to="send-money" aria-current="page">
             <Send className="bi me-2" />
             Send Money
-          </Link>
+          </SidebarLink>
         </li>
         <li className="nav-item">
-          <Link to="history" className="nav-link " aria-current="page">
+          <SidebarLink to="history" aria-current="page">
             <ClockHistory className="bi me-2" />
             History
-          </Link>
+          </SidebarLink>
         </li>
         <li className="nav-item">
-          <Link to="beneficiary" className="nav-link " aria-current="page">
+          <SidebarLink to="beneficiary" aria-current="page">
             <PeopleFill className="bi me-2" />
             Beneficiary
-          </Link>
+          </SidebarLink>
         </li>
         <li className="nav-item">
-          <Link to="profile" className="nav-link " aria-current="page">
+          <SidebarLink to="profile" aria-current="page">
             <PersonCircle className="bi me-2" />
             Profile
-          </Link>
+          </SidebarLink>
         </li>
       </ul>
     </div>

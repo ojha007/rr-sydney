@@ -1,4 +1,15 @@
 import * as Yup from "yup";
+
+interface RateInterface {
+  rate: number;
+  min_range: number;
+  type: string;
+}
+export interface TodayRateInterface {
+  charge: number;
+  rate: RateInterface[];
+  errorMessage: string | null;
+}
 export interface TransactionPayload {
   beneficiary_id: string;
   sending_amount: string;

@@ -9,6 +9,7 @@ import {
   TabPane,
 } from "reactstrap";
 import {
+  Gender,
   ProfileInitialValues,
   ProfilePayload,
   ProfileSchema,
@@ -16,16 +17,25 @@ import {
 import Button from "../../components/LoadingButton";
 import { dispatchEvent } from "../../actions";
 import { useEffect, useState } from "react";
-import TokenService from "../../services/TokenService";
 import { LoggedInUser } from "../../interfaces/User";
-// import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Setting(): JSX.Element {
+  const formatDate = (tgl: Date) => {
+    var temp = tgl.toLocaleDateString().split("/");
+    return temp[0] + "-" + temp[1] + "-" + temp[2];
+  };
   const [authUser, setAuthUser] = useState<LoggedInUser>();
 
+  const fetchLoggedInUser = async () => {
+    let response = await dispatchEvent("USER_DETAIL", {});
+    setAuthUser(response.data.user);
+    console.log(authUser);
+  };
+
   useEffect(() => {
-    let authUser: LoggedInUser = TokenService.getAuthUser();
-    setAuthUser(authUser);
+    (async () => await fetchLoggedInUser())();
   }, []);
 
   const handleOnSubmit = async (
@@ -34,7 +44,9 @@ function Setting(): JSX.Element {
   ) => {
     console.log(values);
     formikHelpers.setSubmitting(true);
-    await dispatchEvent("UPDATE_PROFILE", values, {}, formikHelpers.setErrors);
+    let payload: any = Object.assign({}, values);
+    payload.date_of_birth = "1997-02-02";
+    await dispatchEvent("UPDATE_PROFILE", payload, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
   };
 
@@ -51,6 +63,7 @@ function Setting(): JSX.Element {
             email: authUser?.email || "",
             name: authUser?.name || "",
             phone: authUser?.phone || "",
+            gender: authUser?.gender || Gender.MALE,
           }}
           validationSchema={ProfileSchema}
         >
@@ -131,43 +144,54 @@ function Setting(): JSX.Element {
                 <Col md={6}>
                   <FormGroup>
                     <Label for="date_of_birth">Date Of Birth</Label>
-                    <Input
-                      type="text"
+                    <DatePicker
                       selected={values.date_of_birth}
-                      dateFormat="yyyy-m-dd"
-                      className="form-control"
+                      dateFormat="yyyy-MM-dd"
+                      autoComplete="off"
                       name="date_of_birth"
-                      errors={errors}
-                      touched={touched}
-                      value={values.date_of_birth}
-                      onChange={(date: any) =>
+                      className="form-control"
+                      // value={values.date_of_birth}
+                      onChange={(date: Date) =>
                         setFieldValue("date_of_birth", date)
-                      }
-                      invalid={
-                        errors.date_of_birth && touched.date_of_birth
-                          ? true
-                          : false
                       }
                     />
 
                     {errors.date_of_birth && touched.date_of_birth ? (
-                      <FormFeedback>{errors.date_of_birth}</FormFeedback>
+                      <FormFeedback>Date of birth is required.</FormFeedback>
                     ) : null}
                   </FormGroup>
                 </Col>
                 <Col md={6}>
-                  <Label for="sex">Gender</Label>
+                  <Label for="gender">Gender</Label>
                   <div className="clearfix"></div>
                   <FormGroup check inline>
-                    <Input type="radio" name="sex" />
+                    <Input
+                      type="radio"
+                      name="gender"
+                      onChange={handleChange}
+                      value="male"
+                      checked={values.gender === "male"}
+                    />
                     <Label check>Male</Label>
                   </FormGroup>
                   <FormGroup check inline>
-                    <Input type="radio" name="sex" />
+                    <Input
+                      type="radio"
+                      name="gender"
+                      onChange={handleChange}
+                      value="female"
+                      checked={values.gender === "female"}
+                    />
                     <Label check>Female</Label>
                   </FormGroup>
                   <FormGroup check inline>
-                    <Input type="radio" name="sex" />
+                    <Input
+                      type="radio"
+                      name="gender"
+                      onChange={handleChange}
+                      value="others"
+                      checked={values.gender === "others"}
+                    />
                     <Label check>Others</Label>
                   </FormGroup>
                 </Col>

@@ -39,15 +39,27 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
     formikHelpers: FormikHelpers<BeneficiaryPayload>
   ) => {
     formikHelpers.setSubmitting(true);
-    let response = await dispatchEvent(
-      "BENEFICIARY_CREATE",
-      values,
-      {},
-      formikHelpers.setErrors
-    );
+    let response;
+    //UPDATE
+    if (values.id) {
+      response = await dispatchEvent(
+        "BENEFICIARY_UPDATE",
+        values,
+        { id: values.id },
+        formikHelpers.setErrors
+      );
+    } else {
+      response = await dispatchEvent(
+        "BENEFICIARY_CREATE",
+        values,
+        {},
+        formikHelpers.setErrors
+      );
+    }
     formikHelpers.setSubmitting(false);
     if (response.success) {
       props.handleClose();
+      formikHelpers.resetForm();
       props.fetchAllBeneficiaries();
     }
   };
@@ -130,17 +142,17 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
                 <Label for="name">Address</Label>
                 <Input
                   type="text"
-                  name="address"
+                  name="street"
                   placeholder="Enter Receiver Address"
                   errors={errors}
-                  value={values.address}
+                  value={values.street}
                   touched={touched}
                   onChange={handleChange}
-                  invalid={errors.address && touched.address ? true : false}
+                  invalid={errors.street && touched.street ? true : false}
                   onBlur={handleBlur}
                 />
-                {errors.address && touched.address ? (
-                  <FormFeedback>{errors.address}</FormFeedback>
+                {errors.street && touched.street ? (
+                  <FormFeedback>{errors.street}</FormFeedback>
                 ) : null}
               </FormGroup>
               <Row>

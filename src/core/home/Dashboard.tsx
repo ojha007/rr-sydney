@@ -3,7 +3,6 @@ import { Col, Container, Row } from "reactstrap";
 import LeftContent from "./LeftContent";
 import NavBar from "./Navbar";
 import RightContent from "./RightContext";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function Dashboard() {
   return (

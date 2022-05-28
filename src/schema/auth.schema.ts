@@ -3,8 +3,22 @@ export interface LoginPayload {
   email: string;
   password: string;
 }
+export interface RegisterPayload {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  phone: string;
+}
 
-export const initialValues: LoginPayload = { email: "", password: "" };
+export const LoginInitialValues: LoginPayload = { email: "", password: "" };
+export const RegisterInitialValues: RegisterPayload = {
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+  phone: "",
+};
 export const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Email is invalid").required("Email is required"),
   password: Yup.string()
@@ -14,7 +28,7 @@ export const LoginSchema = Yup.object().shape({
 
 export const RegisterSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  phone: Yup.string().required("Phone  is required"),
+  phone: Yup.number().required("Phone  is required"),
   email: Yup.string().email("Email is invalid").required("Email is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")

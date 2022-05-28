@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-enum Gender {
+export enum Gender {
   MALE = "male",
   FEMALE = "female",
   OTHERS = "others",
@@ -14,7 +14,7 @@ export interface KYCPayload {
   expiry_date: string;
   identity_type_id: number;
   issuer_id: number;
-  file: string;
+  file: any;
 }
 
 export const KycInitialValues: KYCPayload = {
@@ -22,7 +22,7 @@ export const KycInitialValues: KYCPayload = {
   expiry_date: "",
   identity_type_id: 0,
   issuer_id: 0,
-  file: "",
+  file: undefined,
 };
 export const KYCFormSchema = Yup.object().shape({
   id_number: Yup.string().required("Enter your identity number."),
@@ -33,25 +33,47 @@ export const KYCFormSchema = Yup.object().shape({
 });
 
 export interface ProfilePayload {
-  sex: Gender;
+  gender: Gender;
   name: string;
   email: string;
   phone: string;
-  date_of_birth: string;
+  date_of_birth: Date;
 }
 
 export const ProfileInitialValues: ProfilePayload = {
-  sex: Gender.MALE,
+  gender: Gender.MALE,
   name: "",
   email: "",
   phone: "",
-  date_of_birth: "",
+  date_of_birth: new Date(),
 };
 
 export const ProfileSchema = Yup.object().shape({
   date_of_birth: Yup.string().required("Date of birth required field."),
   email: Yup.string().required("Date of birth required field."),
-  sex: Yup.string().required("Gender is required field."),
+  gender: Yup.string().required("Gender is required field."),
   name: Yup.string().required("Enter your identity number."),
   phone: Yup.string().required("Enter your identity expiry date."),
+});
+
+export interface ChangePasswordPayload {
+  confirmPassword: string;
+  newPassword: string;
+  oldPassword: string;
+}
+
+export const ChangePasswordInitialValues: ChangePasswordPayload = {
+  confirmPassword: "",
+  newPassword: "",
+  oldPassword: "",
+};
+
+export const ChangePasswordSchema = Yup.object().shape({
+  oldPassword: Yup.string().required("Old Password is required field."),
+  newPassword: Yup.string()
+    .required("New Password is required field.")
+    .min(6, "New Password should be greater than 6 character."),
+  confirmPassword: Yup.string()
+    .required("Password Confirmation is required field.")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords does not match."),
 });

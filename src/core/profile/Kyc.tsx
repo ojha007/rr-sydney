@@ -23,7 +23,7 @@ import { FileUpload } from "../../components/FileUploader";
 const KYCForm = () => {
   const [identityTypes, setIdentityTypes] = useState<IOption[]>([]);
   const [issuerTypes, setIssuerTypesTypes] = useState<IOption[]>([]);
-  const [uploadedFile, setUploadedFile] = useState<File | undefined>();
+  const [uploadedFile, setUploadedFile] = useState<any>();
   const [userKyc, setUserKyc] = useState<KycServerResponse>();
 
   useEffect(() => {
@@ -44,6 +44,8 @@ const KYCForm = () => {
   ) => {
     console.log(values);
     formikHelpers.setSubmitting(true);
+    values.file = uploadedFile.image;
+    debugger;
     await dispatchEvent("KYC_POST", values, undefined, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
   };

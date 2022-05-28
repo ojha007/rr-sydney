@@ -1,3 +1,4 @@
+import { Formik, Form, FormikHelpers } from "formik";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -6,14 +7,24 @@ import {
   CardTitle,
   Col,
   Container,
-  Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
   Row,
 } from "reactstrap";
 
+import {
+  RegisterSchema,
+  RegisterInitialValues,
+  RegisterPayload,
+} from "../../schema/auth.schema";
 export default function Register() {
+  const handleOnSubmit = async (
+    values: RegisterPayload,
+    formikHelpers: FormikHelpers<RegisterPayload>
+  ) => {};
+
   return (
     <Container fluid className="auth-screen h-100">
       <Row className="justify-content-center align-items-center h-100">
@@ -23,40 +34,110 @@ export default function Register() {
               <CardTitle className="text-center">
                 Register a new membership
               </CardTitle>
-              <Form>
-                <FormGroup>
-                  <Label for="name">Full Name</Label>
-                  <Input type="email" placeholder="Enter your name" addon />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="email">Email Address</Label>
-                  <Input type="email" placeholder="Enter your email address" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="password">Password</Label>
-                  <Input type="password" placeholder="Enter your password" />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="password_confirmation">Confirm Password</Label>
-                  <Input type="password" placeholder="Confirm your password" />
-                </FormGroup>
-                <Row>
-                  <div className="col-md-8">
-                    <FormGroup check inline>
-                      <Input type="checkbox" />
-                      <Label check>I agree terms & condition</Label>
+              <Formik
+                onSubmit={(values, formikHelpers) =>
+                  handleOnSubmit(values, formikHelpers)
+                }
+                initialValues={RegisterInitialValues}
+                validationSchema={RegisterSchema}
+              >
+                {({
+                  errors,
+                  touched,
+                  handleBlur,
+                  handleChange,
+                  isSubmitting,
+                }) => (
+                  <Form>
+                    <FormGroup>
+                      <Label for="name">Full Name</Label>
+                      <Input
+                        type="text"
+                        placeholder="Enter your name"
+                        touched={touched}
+                        name="name"
+                        onChange={handleChange}
+                        invalid={errors.name && touched.name ? true : false}
+                        onBlur={handleBlur}
+                      />
+                      {errors.name && touched.name ? (
+                        <FormFeedback>{errors.name}</FormFeedback>
+                      ) : null}
                     </FormGroup>
-                  </div>
-                  <div className="col-md-4">
-                    <Button
-                      color="primary"
-                      className="btn-sm btn-flat btn-block"
-                    >
-                      Register
-                    </Button>
-                  </div>
-                </Row>
-              </Form>
+                    <FormGroup>
+                      <Label for="email">Email Address</Label>
+                      <Input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        touched={touched}
+                        onChange={handleChange}
+                        invalid={errors.email && touched.email ? true : false}
+                        onBlur={handleBlur}
+                      />
+                      {errors.email && touched.email ? (
+                        <FormFeedback>{errors.email}</FormFeedback>
+                      ) : null}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="phone">Phone Number</Label>
+                      <Input
+                        type="tel"
+                        name="phone"
+                        placeholder="Enter your contact number"
+                        touched={touched}
+                        onChange={handleChange}
+                        invalid={errors.phone && touched.phone ? true : false}
+                        onBlur={handleBlur}
+                      />
+                      {errors.phone && touched.phone ? (
+                        <FormFeedback>{errors.phone}</FormFeedback>
+                      ) : null}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="password">Password</Label>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        touched={touched}
+                        onChange={handleChange}
+                        invalid={
+                          errors.password && touched.password ? true : false
+                        }
+                        onBlur={handleBlur}
+                      />
+                      {errors.password && touched.password ? (
+                        <FormFeedback>{errors.password}</FormFeedback>
+                      ) : null}
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="password_confirmation">
+                        Confirm Password
+                      </Label>
+                      <Input
+                        type="password"
+                        placeholder="Confirm your password"
+                      />
+                    </FormGroup>
+                    <Row>
+                      <div className="col-md-8">
+                        <FormGroup check inline>
+                          <Input type="checkbox" />
+                          <Label check>I agree terms & condition</Label>
+                        </FormGroup>
+                      </div>
+                      <div className="col-md-4">
+                        <Button
+                          color="primary"
+                          className="btn-sm btn-flat btn-block"
+                        >
+                          Register
+                        </Button>
+                      </div>
+                    </Row>
+                  </Form>
+                )}
+              </Formik>
               <Link to="/login">I already have a membership</Link>
             </CardBody>
           </Card>

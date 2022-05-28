@@ -29,6 +29,23 @@ export const BackendRoute = {
     method: FormMethod.POST,
     auth: false,
   },
+  CHANGE_PASSWORD: {
+    url: "/change-password",
+    method: FormMethod.POST,
+    auth: true,
+  },
+  USER_DETAIL: {
+    url: "/user/detail?hideToken=true",
+    method: FormMethod.GET,
+    auth: true,
+  },
+
+  UPDATE_PROFILE: {
+    url: "update-profile",
+    method: FormMethod.POST,
+    auth: true,
+    requestType: "formData",
+  },
   //==============END AUTH ROUTES===========
   BENEFICIARY_LIST: {
     url: "/beneficiary",
@@ -50,11 +67,18 @@ export const BackendRoute = {
     method: FormMethod.GET,
     auth: true,
   },
+  BENEFICIARY_UPDATE: {
+    url: "beneficiary/{id}",
+    method: FormMethod.PUT,
+    auth: true,
+  },
   BENEFICIARY_BY_USER: {
     url: "user/beneficiaries/{userId}",
     method: FormMethod.GET,
     auth: true,
   },
+
+  //=========BENEFICIARY ROUTE END===========
   MASTER_DATA: {
     url: "/get/{type}/master",
     method: FormMethod.GET,
@@ -82,10 +106,9 @@ export const BackendRoute = {
     auth: true,
     requestType: "formData",
   },
-  UPDATE_PROFILE: {
-    url: "update-profile",
-    method: FormMethod.POST,
+  TODAY_RATE_V2: {
+    url: "todayRate",
+    method: FormMethod.GET,
     auth: true,
-    requestType: "formData",
   },
 };

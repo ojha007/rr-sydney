@@ -1,6 +1,6 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import Button from "../../components/LoadingButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -16,19 +16,20 @@ import {
 import { dispatchEvent } from "../../actions";
 import {
   LoginSchema,
-  initialValues,
+  LoginInitialValues,
   LoginPayload,
 } from "../../schema/auth.schema";
 
 export default function Login() {
+  let navigate = useNavigate();
   const handleOnSubmit = async (
     values: LoginPayload,
     formikHelpers: FormikHelpers<LoginPayload>
   ) => {
-    console.log(values);
     formikHelpers.setSubmitting(true);
-    await dispatchEvent("LOGIN", values, {}, formikHelpers.setErrors);
+    let r = await dispatchEvent("LOGIN", values, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
+    if (r.success) navigate("/dashboard");
   };
 
   return (
@@ -44,7 +45,7 @@ export default function Login() {
                 onSubmit={(values, formikHelpers) =>
                   handleOnSubmit(values, formikHelpers)
                 }
-                initialValues={initialValues}
+                initialValues={LoginInitialValues}
                 validationSchema={LoginSchema}
               >
                 {({
@@ -63,7 +64,6 @@ export default function Login() {
                           name="email"
                           errors={errors}
                           touched={touched}
-                          autoFocus={true}
                           onChange={handleChange}
                           invalid={errors.email && touched.email ? true : false}
                           placeholder="Enter your email address"
