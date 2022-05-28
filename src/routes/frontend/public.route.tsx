@@ -8,7 +8,7 @@ const PublicRoute = () => {
   return useRoutes([
     { path: "/", element: <Home /> },
     { path: "/login", element: <Login /> },
-    { path: "/register", element: <Register /> },
+    { path: "register", element: <Register /> },
     { path: "/forget-password", element: <ForgetPassword /> },
   ]);
 };

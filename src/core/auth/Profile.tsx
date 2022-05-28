@@ -10,7 +10,7 @@ const Profile = () => {
   return (
     <div className="box">
       <div className="box-header">Your Profile Section</div>
-      <Nav tabs className="tab-03 mt-2 px-4">
+      <Nav tabs className="tab-03 mt-2 px-4 tab-scrollable">
         <NavItem>
           <NavLink
             className={currentTab === "KYC" ? "active" : ""}
@@ -36,7 +36,7 @@ const Profile = () => {
           </NavLink>
         </NavItem>
       </Nav>
-      <TabContent activeTab={currentTab} className={"m-3"}>
+      <TabContent activeTab={currentTab} className="m-3">
         <KYCForm />
         <Setting />
         <ChangePassword />

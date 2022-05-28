@@ -1,6 +1,14 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
-import { Col, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
+import {
+  Col,
+  FormFeedback,
+  FormGroup,
+  Input,
+  Label,
+  Row,
+  Spinner,
+} from "reactstrap";
 import { dispatchEvent } from "../../actions";
 import { IOption } from "../../interfaces/common";
 import {
@@ -11,15 +19,17 @@ import {
 } from "../../schema/transaction.schema";
 import Button from "../../components/LoadingButton";
 import { FilesUpload } from "../../components/FileUploader";
+import TokenService from "../../services/TokenService";
+import UploadYourKyc from "../../components/UploadYourKyc";
 
 const SendMoney = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const fetchTodayRate = async () => {
+    setLoading(true);
     let response = await dispatchEvent("TODAY_RATE_V2", {});
     if (response.success) setTodayRate(response.data);
+    setLoading(false);
   };
-
-  useEffect(() => {});
-
   const [beneficiaries, setBeneficiaries] = useState<Array<IOption>>([]);
   const [todayRate, setTodayRate] = useState<TodayRateInterface>();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -36,8 +46,10 @@ const SendMoney = () => {
   };
 
   useEffect(() => {
-    (async () => await fetchTodayRate())();
-    (async () => await fetchBeneficiary())();
+    if (TokenService.getAuthUser().kycStatus === "VERIFIED") {
+      (async () => await fetchTodayRate())();
+      (async () => await fetchBeneficiary())();
+    }
   }, []);
 
   const fetchBeneficiary = async () => {
@@ -52,9 +64,15 @@ const SendMoney = () => {
   };
   return (
     <div className="send-money-screen box">
-      {todayRate?.errorMessage ? (
+      {TokenService.getAuthUser().kycStatus !== "VERIFIED" ? (
+        <UploadYourKyc />
+      ) : loading ? (
+        <div className="text-center p-2 m-3">
+          <Spinner />
+        </div>
+      ) : todayRate?.errorMessage ? (
         <>
-          <div className="box-header">{todayRate.errorMessage}</div>
+          <div className="box-header p-2 m-3">{todayRate.errorMessage}</div>
           <div className="box-body"></div>
         </>
       ) : (

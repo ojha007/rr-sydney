@@ -4,6 +4,7 @@ import {
   Send,
   ClockHistory,
   PeopleFill,
+  BoxArrowRight,
 } from "react-bootstrap-icons";
 import { Link, useResolvedPath, useMatch, LinkProps } from "react-router-dom";
 import TokenService from "../../services/TokenService";
@@ -71,6 +72,16 @@ export default function LeftContent() {
           <SidebarLink to="profile" aria-current="page">
             <PersonCircle className="bi me-2" />
             Profile
+          </SidebarLink>
+        </li>
+        <li className="nav-item">
+          <SidebarLink
+            to="/"
+            aria-current="page"
+            onClick={() => TokenService.clearToken()}
+          >
+            <BoxArrowRight className="bi me-2" />
+            Logout
           </SidebarLink>
         </li>
       </ul>

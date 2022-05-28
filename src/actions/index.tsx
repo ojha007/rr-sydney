@@ -31,8 +31,7 @@ export const dispatchEvent = async (
     payload
   );
   if (response.success) {
-    if (api.method === FormMethod.POST) {
-      console.log(response);
+    if (api.method !== FormMethod.GET) {
       toast.success(response.message);
     }
     if (action === "LOGIN") {
@@ -43,7 +42,6 @@ export const dispatchEvent = async (
       toast.error(response.message);
     }
     if (serverErrors) {
-      console.log(response);
       let errors = response.errors || {};
       serverErrors(errors);
     }

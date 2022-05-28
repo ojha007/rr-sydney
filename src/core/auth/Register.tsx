@@ -98,6 +98,7 @@ export default function Register() {
                       <Label for="password">Password</Label>
                       <Input
                         type="password"
+                        name="password"
                         placeholder="Enter your password"
                         touched={touched}
                         onChange={handleChange}
@@ -116,8 +117,20 @@ export default function Register() {
                       </Label>
                       <Input
                         type="password"
+                        name="confirmPassword"
                         placeholder="Confirm your password"
+                        touched={touched}
+                        onChange={handleChange}
+                        invalid={
+                          errors.confirmPassword && touched.confirmPassword
+                            ? true
+                            : false
+                        }
+                        onBlur={handleBlur}
                       />
+                      {errors.confirmPassword && touched.confirmPassword ? (
+                        <FormFeedback>{errors.confirmPassword}</FormFeedback>
+                      ) : null}
                     </FormGroup>
                     <Row>
                       <div className="col-md-8">
