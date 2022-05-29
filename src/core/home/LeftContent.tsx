@@ -21,6 +21,7 @@ function SidebarLink({ children, to, ...props }: LinkProps) {
 }
 
 export default function LeftContent() {
+  let avatar = TokenService.getAuthUser()?.avatar;
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 bg-white"
@@ -28,7 +29,9 @@ export default function LeftContent() {
     >
       <div className="text-center">
         <img
-          src={TokenService.getAuthUser()?.avatar}
+          src={
+            avatar ? avatar : require("../../assets/images/fallback-user.jpg")
+          }
           className="img-circle"
           alt=""
         />

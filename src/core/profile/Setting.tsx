@@ -20,14 +20,10 @@ import { useEffect, useState } from "react";
 import { LoggedInUser } from "../../interfaces/User";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { formatDate } from "../../lib/DateFormatter";
 
 function Setting(): JSX.Element {
-  const formatDate = (tgl: Date) => {
-    var temp = tgl.toLocaleDateString().split("/");
-    return temp[0] + "-" + temp[1] + "-" + temp[2];
-  };
   const [authUser, setAuthUser] = useState<LoggedInUser>();
-
   const fetchLoggedInUser = async () => {
     let response = await dispatchEvent("USER_DETAIL", {});
     setAuthUser(response.data.user);
@@ -44,9 +40,7 @@ function Setting(): JSX.Element {
   ) => {
     console.log(values);
     formikHelpers.setSubmitting(true);
-    let payload: any = Object.assign({}, values);
-    payload.date_of_birth = "1997-02-02";
-    await dispatchEvent("UPDATE_PROFILE", payload, {}, formikHelpers.setErrors);
+    await dispatchEvent("UPDATE_PROFILE", values, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
   };
 
@@ -143,20 +137,19 @@ function Setting(): JSX.Element {
               <Row>
                 <Col md={6}>
                   <FormGroup>
-                    <Label for="date_of_birth">Date Of Birth</Label>
+                    <Label for="dob">Date Of Birth</Label>
                     <DatePicker
-                      selected={values.date_of_birth}
+                      selected={new Date(values.dob)}
                       dateFormat="yyyy-MM-dd"
                       autoComplete="off"
-                      name="date_of_birth"
+                      name="dob"
                       className="form-control"
-                      // value={values.date_of_birth}
                       onChange={(date: Date) =>
-                        setFieldValue("date_of_birth", date)
+                        setFieldValue("dob", formatDate(date))
                       }
                     />
 
-                    {errors.date_of_birth && touched.date_of_birth ? (
+                    {errors.dob && touched.dob ? (
                       <FormFeedback>Date of birth is required.</FormFeedback>
                     ) : null}
                   </FormGroup>

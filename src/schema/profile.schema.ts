@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { formatDate } from "../lib/DateFormatter";
 export enum Gender {
   MALE = "male",
   FEMALE = "female",
@@ -19,7 +20,7 @@ export interface KYCPayload {
 
 export const KycInitialValues: KYCPayload = {
   id_number: "",
-  expiry_date: "",
+  expiry_date: formatDate(new Date()),
   identity_type_id: 0,
   issuer_id: 0,
   file: undefined,
@@ -29,7 +30,7 @@ export const KYCFormSchema = Yup.object().shape({
   expiry_date: Yup.string().required("Enter your identity expiry date."),
   identity_type_id: Yup.string().required("Select your identity type."),
   issuer_id: Yup.string().required("Select your identity type."),
-  file: Yup.string().required("Your identity is required."),
+  file: Yup.string().optional(),
 });
 
 export interface ProfilePayload {
@@ -37,7 +38,7 @@ export interface ProfilePayload {
   name: string;
   email: string;
   phone: string;
-  date_of_birth: Date;
+  dob: Date;
 }
 
 export const ProfileInitialValues: ProfilePayload = {
@@ -45,11 +46,11 @@ export const ProfileInitialValues: ProfilePayload = {
   name: "",
   email: "",
   phone: "",
-  date_of_birth: new Date(),
+  dob: new Date(),
 };
 
 export const ProfileSchema = Yup.object().shape({
-  date_of_birth: Yup.string().required("Date of birth required field."),
+  dob: Yup.string().required("Date of birth required field."),
   email: Yup.string().required("Date of birth required field."),
   gender: Yup.string().required("Gender is required field."),
   name: Yup.string().required("Enter your identity number."),

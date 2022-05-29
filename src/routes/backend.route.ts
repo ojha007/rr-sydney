@@ -41,7 +41,7 @@ export const BackendRoute = {
   },
 
   UPDATE_PROFILE: {
-    url: "update-profile",
+    url: "/update-profile",
     method: FormMethod.POST,
     auth: true,
     requestType: "formData",
@@ -90,7 +90,7 @@ export const BackendRoute = {
     auth: true,
   },
   SEND_MONEY: {
-    url: "send-money",
+    url: "/send-money",
     method: FormMethod.POST,
     auth: true,
     requestType: "formData",

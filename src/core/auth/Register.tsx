@@ -1,7 +1,7 @@
 import { Formik, Form, FormikHelpers } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../components/LoadingButton";
 import {
-  Button,
   Card,
   CardBody,
   CardTitle,
@@ -19,11 +19,23 @@ import {
   RegisterInitialValues,
   RegisterPayload,
 } from "../../schema/auth.schema";
+import { dispatchEvent } from "../../actions";
 export default function Register() {
+  let navigate = useNavigate();
   const handleOnSubmit = async (
     values: RegisterPayload,
     formikHelpers: FormikHelpers<RegisterPayload>
-  ) => {};
+  ) => {
+    formikHelpers.setSubmitting(true);
+    let r = await dispatchEvent(
+      "REGISTER",
+      values,
+      {},
+      formikHelpers.setErrors
+    );
+    formikHelpers.setSubmitting(false);
+    if (r.success) navigate("/email-otp");
+  };
 
   return (
     <Container fluid className="auth-screen h-100">
@@ -142,10 +154,11 @@ export default function Register() {
                       <div className="col-md-4">
                         <Button
                           color="primary"
+                          type="submit"
+                          text="Register"
+                          loading={+isSubmitting}
                           className="btn-sm btn-flat btn-block"
-                        >
-                          Register
-                        </Button>
+                        />
                       </div>
                     </Row>
                   </Form>

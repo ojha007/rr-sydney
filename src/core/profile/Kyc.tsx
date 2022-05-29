@@ -19,6 +19,9 @@ import { useEffect, useState } from "react";
 import { dispatchEvent } from "../../actions";
 import { IOption } from "../../interfaces/common";
 import { FileUpload } from "../../components/FileUploader";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { formatDate } from "../../lib/DateFormatter";
 
 const KYCForm = () => {
   const [identityTypes, setIdentityTypes] = useState<IOption[]>([]);
@@ -42,10 +45,8 @@ const KYCForm = () => {
     values: KYCPayload,
     formikHelpers: FormikHelpers<KYCPayload>
   ) => {
-    console.log(values);
     formikHelpers.setSubmitting(true);
-    values.file = uploadedFile.image;
-    debugger;
+    values.file = uploadedFile?.file;
     await dispatchEvent("KYC_POST", values, undefined, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
   };
@@ -67,6 +68,7 @@ const KYCForm = () => {
             handleChange,
             isSubmitting,
             values,
+            setFieldValue,
           }) => (
             <Form autoComplete="off">
               <Row>
@@ -153,22 +155,18 @@ const KYCForm = () => {
                 <Col md={6}>
                   <FormGroup>
                     <Label for="id_number">Expiry Date</Label>
-                    <Input
-                      type="text"
+                    <DatePicker
+                      selected={new Date(values.expiry_date)}
+                      dateFormat="yyyy-MM-dd"
+                      autoComplete="off"
                       name="expiry_date"
-                      errors={errors}
-                      touched={touched}
-                      value={values.expiry_date}
-                      onChange={handleChange}
-                      invalid={
-                        errors.expiry_date && touched.expiry_date ? true : false
+                      className="form-control"
+                      onChange={(date: Date) =>
+                        setFieldValue("expiry_date", formatDate(date))
                       }
-                      placeholder="Enter your identity number"
-                      onBlur={handleBlur}
                     />
-
                     {errors.expiry_date && touched.expiry_date ? (
-                      <FormFeedback>{errors.expiry_date}</FormFeedback>
+                      <FormFeedback>Expiry Date is required.</FormFeedback>
                     ) : null}
                   </FormGroup>
                 </Col>
@@ -178,6 +176,7 @@ const KYCForm = () => {
                 <FileUpload
                   setUploadedFile={setUploadedFile}
                   uploadedFile={uploadedFile}
+                  error={errors.file}
                 />
               </Row>
               <Row className="mt-3">

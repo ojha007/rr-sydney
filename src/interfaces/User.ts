@@ -12,4 +12,5 @@ export interface LoggedInUser {
   phone: string;
   status: number;
   super: number;
+  kycMessage: string;
 }

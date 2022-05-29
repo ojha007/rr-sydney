@@ -1,38 +1,22 @@
 import { Link } from "react-router-dom";
-import { Label } from "reactstrap";
+import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+  Label,
+} from "reactstrap";
+
+// import "../assets/css/home.css";
+// import "../assets/css/fonts.css";
 
 export default function Home() {
   return (
     <>
-      <div className="preloader">
-        <div className="preloader-body">
-          <div className="cssload-container">
-            <div className="cssload-speeding-wheel"></div>
-          </div>
-          <p>Loading...</p>
-        </div>
-      </div>
-
-      <div className="page">
+      <div>
         <header className="section page-header">
           <div className="rd-navbar-wrap">
-            <nav
-              className="rd-navbar rd-navbar-classNameic"
-              data-layout="rd-navbar-fixed"
-              data-sm-layout="rd-navbar-fixed"
-              data-md-layout="rd-navbar-fixed"
-              data-md-device-layout="rd-navbar-fixed"
-              data-lg-layout="rd-navbar-static"
-              data-lg-device-layout="rd-navbar-static"
-              data-xl-layout="rd-navbar-static"
-              data-xl-device-layout="rd-navbar-static"
-              data-lg-stick-up-offset="46px"
-              data-xl-stick-up-offset="46px"
-              data-xxl-stick-up-offset="46px"
-              data-lg-stick-up="true"
-              data-xl-stick-up="true"
-              data-xxl-stick-up="true"
-            >
+            <nav className="rd-navbar rd-navbar-classic">
               <div className="rd-navbar-main-outer">
                 <div className="rd-navbar-main">
                   <div className="rd-navbar-panel">
@@ -46,12 +30,12 @@ export default function Home() {
                       <a className="brand logo" href="index.html">
                         <img
                           className="brand-logo-dark"
-                          src="images/rrs-logo.png"
+                          src={require("../assets/images/rrs-logo.png")}
                           alt=""
                         />
                         <img
                           className="brand-logo-light"
-                          src="images/rrs-logo.png"
+                          src={require("../assets/images/rrs-logo.png")}
                           alt=""
                         />
                       </a>
@@ -132,12 +116,12 @@ export default function Home() {
                       Join Viber Group
                     </a>
 
-                    <a
+                    <Link
                       className="btn btn-outline-white"
-                      href="https://registeredremit.com.au/send-money/create"
+                      to="/dashboard/send-money"
                     >
                       Send Money
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -145,73 +129,14 @@ export default function Home() {
                     className="media-wrapper wow slideInRight"
                     data-wow-delay=".3s"
                   >
-                    <img src="./images/used/hero-banner.jpg" alt="" />
+                    <img
+                      src={require("../assets/images/used/hero-banner.jpg")}
+                      alt="Registered Remit Sydney"
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            {/* <div className="decorate-layer">
-            <div className="layer-1">
-              <div className="layer" data-depth=".20">
-                <img
-                  src="images/parallax-item-1-563x532.png"
-                  alt=""
-                  width="563"
-                  height="266"
-                />
-              </div>
-            </div>
-            <div className="layer-2">
-              <div className="layer" data-depth=".30">
-                <img
-                  src="images/parallax-item-2-276x343.png"
-                  alt=""
-                  width="276"
-                  height="171"
-                />
-              </div>
-            </div>
-            <div className="layer-3">
-              <div className="layer" data-depth=".40">
-                <img
-                  src="images/parallax-item-3-153x144.png"
-                  alt=""
-                  width="153"
-                  height="72"
-                />
-              </div>
-            </div>
-            <div className="layer-4">
-              <div className="layer" data-depth=".20">
-                <img
-                  src="images/parallax-item-4-69x74.png"
-                  alt=""
-                  width="69"
-                  height="37"
-                />
-              </div>
-            </div>
-            <div className="layer-5">
-              <div className="layer" data-depth=".40">
-                <img
-                  src="images/parallax-item-5-72x75.png"
-                  alt=""
-                  width="72"
-                  height="37"
-                />
-              </div>
-            </div>
-            <div className="layer-6">
-              <div className="layer" data-depth=".30">
-                <img
-                  src="images/parallax-item-6-45x54.png"
-                  alt=""
-                  width="45"
-                  height="27"
-                />
-              </div>
-            </div>
-          </div> */}
           </section>
 
           <section className="section section-sm position-relative" id="about">
@@ -223,7 +148,7 @@ export default function Home() {
                     data-wow-delay=".2s"
                   >
                     <img
-                      src="images/used/about.jpg"
+                      src={require("../assets/images/used/about.jpg")}
                       alt=""
                       width="570"
                       height="351"
@@ -343,7 +268,7 @@ export default function Home() {
               data-wow-delay=".5s"
             >
               <img
-                src="images/used/docusign-7RWBSYA9Rro-unsplash.jpg"
+                src={require("../assets/images/used/docusign-7RWBSYA9Rro-unsplash.jpg")}
                 alt=""
                 width="636"
                 height="240"
@@ -374,7 +299,54 @@ export default function Home() {
               </div>
               <div className="row row-30 justify-content-center">
                 <div className="col-md-8">
-                  <div
+                  <Accordion open="1">
+                    <AccordionItem className="mb-3">
+                      <AccordionHeader targetId="1">
+                        Accordion Item 1
+                      </AccordionHeader>
+                      <AccordionBody accordionId="1">
+                        <strong>
+                          This is the first item's accordion body.
+                        </strong>
+                        You can modify any of this with custom CSS or overriding
+                        our default variables. It's also worth noting that just
+                        about any HTML can go within the{" "}
+                        <code>.accordion-body</code>, though the transition does
+                        limit overflow.
+                      </AccordionBody>
+                    </AccordionItem>
+                    <AccordionItem className="mb-3">
+                      <AccordionHeader targetId="2">
+                        Accordion Item 2
+                      </AccordionHeader>
+                      <AccordionBody accordionId="2">
+                        <strong>
+                          This is the second item's accordion body.
+                        </strong>
+                        You can modify any of this with custom CSS or overriding
+                        our default variables. It's also worth noting that just
+                        about any HTML can go within the{" "}
+                        <code>.accordion-body</code>, though the transition does
+                        limit overflow.
+                      </AccordionBody>
+                    </AccordionItem>
+                    <AccordionItem className="mb-3">
+                      <AccordionHeader targetId="3">
+                        Accordion Item 3
+                      </AccordionHeader>
+                      <AccordionBody accordionId="3">
+                        <strong>
+                          This is the third item's accordion body.
+                        </strong>
+                        You can modify any of this with custom CSS or overriding
+                        our default variables. It's also worth noting that just
+                        about any HTML can go within the{" "}
+                        <code>.accordion-body</code>, though the transition does
+                        limit overflow.
+                      </AccordionBody>
+                    </AccordionItem>
+                  </Accordion>
+                  {/* <div
                     className="accordion wow fadeInDown"
                     data-wow-delay=".3s"
                     id="accordionExample"
@@ -474,7 +446,7 @@ export default function Home() {
                         <div className="card-body">We are open 24/7 hours.</div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -673,7 +645,7 @@ export default function Home() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g clip-path="url(#clip0_5627_101815)">
+                      <g clipPath="url(#clip0_5627_101815)">
                         <path
                           d="M403.7 324.7C451.2 288.6 472.3 188.5 395.2 139.4C344.2 106.9 312.4 125.4 255 103.9C184.9 77.6999 174.4 -1.60012 89.1002 37.3999C44.0002 58.0999 12.6002 116.3 7.10015 182.5C1.70015 247.3 24.7001 291.8 71.6002 322.2C181.9 326.9 292.3 326 403.7 324.7Z"
                           fill="#99D3FF"
@@ -801,23 +773,23 @@ export default function Home() {
                         <path
                           d="M155.4 145.8C159.9 143.2 164.5 142.1 171 144.5"
                           stroke="#0B2D50"
-                          stroke-width="2"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeWidth="2"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M185.9 145.599C189.7 142.699 195.4 142.499 198.3 145.599"
                           stroke="#0B2D50"
-                          stroke-width="2"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeWidth="2"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M181.3 160.1C181.7 162.1 181.5 166.6 180.5 168.6"
                           stroke="#CC454E"
-                          stroke-width="2"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeWidth="2"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M166.2 161.499C167.195 161.499 168 160.201 168 158.599C168 156.998 167.195 155.699 166.2 155.699C165.206 155.699 164.4 156.998 164.4 158.599C164.4 160.201 165.206 161.499 166.2 161.499Z"
@@ -858,9 +830,9 @@ export default function Home() {
                         <path
                           d="M142.2 170.7C142.2 170.7 151.7 182.9 168.1 184.1"
                           stroke="#3A92C9"
-                          stroke-width="2"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeWidth="2"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M181.601 290.5L181.001 306.5C181.001 306.5 123.201 323.8 113.601 318.4C108.901 315.7 104.601 301 101.301 286.6C97.9012 271.5 95.7012 256.8 95.7012 256.8L129.601 250.2C129.601 250.2 129.601 270.9 130.801 282.8C131.201 287.2 131.801 290.5 132.601 291C135.601 292.9 181.601 290.5 181.601 290.5Z"
@@ -877,8 +849,8 @@ export default function Home() {
                         <path
                           d="M207.002 311.001C207.302 307.501 207.002 304.001 206.102 300.701"
                           stroke="#CC454E"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M125.801 216.5C123.301 209.6 114.301 195.4 114.301 195.4C114.301 195.4 100.501 201.1 95.7007 210.8C87.4007 227.2 91.6007 274.4 91.6007 274.4C102.701 279.1 125.101 279.1 134.601 277.8C134.701 277.9 130.801 230.4 125.801 216.5Z"
@@ -887,26 +859,18 @@ export default function Home() {
                         <path
                           d="M127.601 219.4C131.401 237.3 133.401 254.1 134.001 270.5"
                           stroke="#F2AE30"
-                          stroke-miterlimit="10"
-                          stroke-linecap="round"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
                         />
                         <path
                           d="M421.901 320.4H27.6006V330.3H421.901V320.4Z"
                           fill="#005392"
                         />
                       </g>
-                      <defs>
-                        {/* <clipPath id="clip0_5627_101815">
-                        <rect width="446.3" height="330.3" fill="white" />
-                      </clipPath> */}
-                      </defs>
                     </svg>
                   </div>
-                  <div className="row">
-                    <div
-                      className="col-sm-6 fadeInRight text-capitalize"
-                      data-wow-delay=".3s"
-                    >
+                  <div className="row mt-4">
+                    <div className="col-sm-6  text-capitalize">
                       <h5>Email Address:</h5>
                       <a
                         href="mailto:registeredremitsydney@gmail.com"
@@ -920,7 +884,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div
-                      className="col-sm-6 fadeInRight text-capitalize mt-2 mt-sm-0"
+                      className="col-sm-6  text-capitalize mt-2 mt-sm-0"
                       data-wow-delay=".3s"
                     >
                       <h5>Our Location</h5>
@@ -931,41 +895,34 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <h4
-                    className="wow fadeInLeft text-capitalize"
-                    data-wow-delay=".3s"
-                  >
+                  <h4 className="wow fadeInLeft text-capitalize">
                     Say<span className="text-primary"> Hi!</span>
                   </h4>
-
-                  <form
-                    action=""
-                    className="mt-3 wow fadeInRight"
-                    data-wow-delay=".2s"
-                  >
-                    <div className="form-group">
+                  <form action="" className="mt-3 wow" data-wow-delay=".2s">
+                    <div className="mb-3">
                       <Label for="exampleInputEmail1">Email address</Label>
                       <input
                         className="form-control"
                         id="exampleInputEmail1"
                         required
                         type="email"
-                        aria-describedby="emailHelp"
                         placeholder="Email"
                       />
+                      <div id="emailHelp" className="form-text">
+                        We'll never share your email with anyone else.
+                      </div>
                     </div>
-                    <div className="form-group">
+                    <div className="mb-3">
                       <Label for="exampleInputEmail1">Full Name</Label>
                       <input
                         className="form-control"
                         required
                         id="exampleInputEmail1"
                         type="email"
-                        aria-describedby="emailHelp"
                         placeholder="Full Name"
                       />
                     </div>
-                    <div className="form-group">
+                    <div className="mb-3">
                       <Label for="exampleInputEmail1">Your Message</Label>
                       <textarea className="form-control" required></textarea>
                     </div>
@@ -978,23 +935,23 @@ export default function Home() {
             </div>
           </section>
         </main>
-        <footer className="section footer-classNameic section-sm">
+        <footer className="section footer-classic section-sm">
           <div className="container">
             <div className="row row-30">
               <div className="col-lg-3 wow fadeInLeft">
-                <a className="brand logo" href="index.html">
+                <Link className="brand logo" to="/">
                   <img
                     className="brand-logo-dark"
-                    src="images/rrs-logo.png"
+                    src={require("../assets/images/rrs-logo.png")}
                     alt=""
                   />
                   <img
                     className="brand-logo-light"
-                    src="images/rrs-logo.png"
+                    src={require("../assets/images/rrs-logo.png")}
                     alt=""
                   />
-                </a>
-                <p className="footer-classNameic-description offset-top-0 offset-right-25">
+                </Link>
+                <p className="footer-classic-description offset-top-0 offset-right-25">
                   Fast-Convenient-Secure-Confidential
                   <br />
                   हामी सदैव सुरक्षित र भरपर्दो सेवा मार्फत सम्बन्ध गास्छौँ।
@@ -1015,7 +972,7 @@ export default function Home() {
                 </ul>
               </div>
               <div className="col-lg-3 col-sm-8 wow fadeInUp">
-                <p className="footer-classNameic-title">Contact info</p>
+                <p className="footer-classic-title">Contact info</p>
                 <div className="d-block offset-top-0">Sydney, Australia</div>
                 <a
                   className="d-inline-block accent-link"
@@ -1031,8 +988,8 @@ export default function Home() {
                 className="col-lg-2 col-sm-4 wow fadeInUp"
                 data-wow-delay=".3s"
               >
-                <p className="footer-classNameic-title">Quick Links</p>
-                <ul className="footer-classNameic-nav-list">
+                <p className="footer-classic-title">Quick Links</p>
+                <ul className="footer-classic-nav-list">
                   <li>
                     <a href="#">Home</a>
                   </li>
@@ -1048,9 +1005,9 @@ export default function Home() {
                 </ul>
               </div>
               <div className="col-lg-4 wow fadeInLeft" data-wow-delay=".2s">
-                <p className="footer-classNameic-title">Newsletter</p>
+                <p className="footer-classic-title">Newsletter</p>
                 <form
-                  className="rd-mailform text-left footer-classNameic-subscribe-form"
+                  className="rd-mailform text-left footer-classic-subscribe-form"
                   data-form-output="form-output-global"
                   data-form-type="contact"
                   method="post"
@@ -1066,7 +1023,7 @@ export default function Home() {
                       id="subscribe-email"
                       type="email"
                       name="email"
-                      data-constraints="@Email @Required"
+                      required
                     />
                   </div>
                   <div className="form-button group-sm text-center text-lg-left">
@@ -1074,19 +1031,19 @@ export default function Home() {
                       className="button button-primary button-circle"
                       type="submit"
                     >
-                      sign up
+                      Sign up
                     </button>
                   </div>
                 </form>
-                <p>
+                <p className="mt-2">
                   Be the first to find out about our latest news, updates, and
                   special offers.
                 </p>
               </div>
             </div>
           </div>
-          <div className="container wow fadeInUp" data-wow-delay=".4s">
-            <div className="footer-classNameic-aside">
+          <div className="container">
+            <div className="footer-classic-aside">
               <p className="rights text-white">
                 <span>&copy;&nbsp;</span>
                 <span className="copyright-year"></span>. All Rights Reserved by

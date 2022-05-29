@@ -1,13 +1,22 @@
+import { FormikErrors } from "formik";
 import { useRef } from "react";
 import { Trash, Upload } from "react-bootstrap-icons";
+import { FormFeedback } from "reactstrap";
 
 interface FilesUploader {
   setUploadedFiles: Function;
   uploadedFiles: File[];
+  error?:
+    | string
+    | string[]
+    | FormikErrors<any>
+    | FormikErrors<any>[]
+    | undefined;
 }
 interface FileUploader {
   setUploadedFile: Function;
   uploadedFile: any;
+  error?: any;
 }
 const FilesUpload = (props: FilesUploader) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -107,13 +116,17 @@ const FilesUpload = (props: FilesUploader) => {
 };
 
 const FileUpload = (props: FileUploader) => {
+  console.log(props);
   const fileRef = useRef<HTMLInputElement>(null);
+  let message = props.error;
+  console.log(props.error ? (props.error as any) : "");
   const handleFileUpload = (e: any) => {
     if (e.target.files) {
       const file = {
         name: e.target.files[0].name,
         size: e.target.files[0].size,
-        image: URL.createObjectURL(e.target.files[0]),
+        image_base64: URL.createObjectURL(e.target.files[0]),
+        file: e.target.files[0],
       };
       props.setUploadedFile(file);
     }
@@ -148,10 +161,17 @@ const FileUpload = (props: FileUploader) => {
           }}
         />
       </div>
+      {props.error ? (
+        <FormFeedback style={{ display: "block" }}>{message}</FormFeedback>
+      ) : null}
       {props.uploadedFile ? (
         <div className="d-flex justify-content-between flex-wrap mt-3 file-list">
           <div className="align-vertical">
-            <img src={props.uploadedFile.image} alt="" className="file-image" />
+            <img
+              src={props.uploadedFile.image_base64}
+              alt=""
+              className="file-image"
+            />
             <h6 className="ml-3">{props.uploadedFile.name}</h6>
           </div>
 
