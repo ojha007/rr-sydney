@@ -46,6 +46,16 @@ export const BackendRoute = {
     auth: true,
     requestType: "formData",
   },
+  EMAIL_OTP_VERIFY: {
+    url: "/email/otp/verify",
+    method: FormMethod.POST,
+    auth: true,
+  },
+  RESEND_EMAIL_OTP: {
+    url: "/email/otp/resend",
+    method: FormMethod.GET,
+    auth: true,
+  },
   //==============END AUTH ROUTES===========
   BENEFICIARY_LIST: {
     url: "/beneficiary",

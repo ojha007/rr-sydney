@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { ReactElement, RefObject, useEffect, useRef } from "react";
 import { ArrowRight } from "react-bootstrap-icons";
+import { useNavigate } from "react-router";
 import {
   Card,
   CardBody,
@@ -10,41 +11,84 @@ import {
   Container,
   Row,
 } from "reactstrap";
+import { ref } from "yup";
+import { dispatchEvent } from "../../actions";
 
 export default function Otp() {
-  const [otp, setOtp] = React.useState([]);
-  const otpRef = useRef<any>(null);
+  let navigate = useNavigate();
+  const [refs, setRefs] = React.useState<RefObject<HTMLInputElement>[]>([]);
+  const [otp, setOtp] = React.useState<any>([]);
   const submitButton = useRef<any>(null);
   const [selectedInputId, setSelectedInputId] = React.useState(0);
 
-  const handleKeyUp = (e: any) => {
-    let otpInput = otpRef.current.children;
-    let currentTarget = e.target;
-    if (e.keyCode == 8) {
-      let prevInputNode = parseInt(currentTarget.id) - 2;
-      if (!(prevInputNode === -1)) {
-        otpInput[prevInputNode].focus();
-      }
-    } else {
-      let nextInputNode = +parseInt(currentTarget.id);
-      if (nextInputNode === 5) {
-        submitButton.current.focus();
-      } else {
-        otpInput[nextInputNode].focus();
+  const onKeydown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (
+      e.key === "Backspace" &&
+      selectedInputId > 0 &&
+      otp[selectedInputId] == ""
+    ) {
+      let updatedOtp = [...otp];
+      updatedOtp[selectedInputId - 1] = "";
+      setSelectedInputId(selectedInputId - 1);
+      setOtp(updatedOtp);
+    }
+  };
+
+  React.useEffect(() => {
+    let inputRefs: RefObject<HTMLInputElement>[] = [...new Array(5)].map(() =>
+      React.createRef()
+    );
+    setRefs(inputRefs);
+  }, []);
+
+  React.useEffect(() => {
+    if (refs.length > 0 && selectedInputId < refs.length) {
+      refs[selectedInputId].current?.focus();
+    }
+  }, [selectedInputId, refs]);
+
+  // for any input
+  const changeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (+e.target.value >= 0 && +e.target.value <= 9) {
+      let updatedOtp = [...otp];
+      updatedOtp[selectedInputId] = e?.target?.value;
+      setOtp(updatedOtp);
+      if (selectedInputId < refs.length - 1 && e.target.value) {
+        setSelectedInputId(selectedInputId + 1);
       }
     }
   };
+
+  const resendOtp = async () => {
+    await dispatchEvent("RESEND_EMAIL_OTP", {});
+  };
+
+  const onFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    setSelectedInputId(Number(e.target.id));
+  };
+
+  const handleOnSubmit: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async () => {
+    if (otp.length < 5) {
+      alert("Invalid otp");
+    }
+    let r = await dispatchEvent("EMAIL_OTP_VERIFY", { otp: otp.join("") });
+    if (r.success) navigate("/dashboard/profile");
+  };
+
   const pasteHandler: React.ClipboardEventHandler<HTMLInputElement> = (e) => {
     let pasteData = e.clipboardData.getData("text").split("");
+    // debugger;
 
     let updatedOtp = [...otp];
     let tempSelectedInputId = 0;
 
     pasteData.forEach((char) => {
-      if (+char >= 0 && +char <= 9 && tempSelectedInputId < otp.length) {
-        // updatedOtp[tempSelectedInputId] = char;
+      if (+char >= 0 && +char <= 9 && tempSelectedInputId < refs.length) {
+        updatedOtp[tempSelectedInputId] = char;
 
-        if (!(tempSelectedInputId == otp.length - 1)) {
+        if (!(tempSelectedInputId == refs.length - 1)) {
           tempSelectedInputId++;
         }
       }
@@ -67,48 +111,29 @@ export default function Otp() {
             </CardHeader>
             <CardBody>
               <div className="flex-grow-1 py-4">
-                <div className="otp-field mb-4" ref={otpRef}>
-                  <input
-                    id="1"
-                    type="number"
-                    onPaste={pasteHandler}
-                    required
-                    onKeyUp={handleKeyUp}
-                  />
-                  <input
-                    id="2"
-                    type="number"
-                    required
-                    onPaste={pasteHandler}
-                    onKeyUp={handleKeyUp}
-                  />
-                  <input
-                    id="3"
-                    type="number"
-                    required
-                    onPaste={pasteHandler}
-                    onKeyUp={handleKeyUp}
-                  />
-                  <input
-                    id="4"
-                    type="number"
-                    required
-                    onPaste={pasteHandler}
-                    onKeyUp={handleKeyUp}
-                  />
-                  <input
-                    id="5"
-                    type="number"
-                    required
-                    onPaste={pasteHandler}
-                    onKeyUp={handleKeyUp}
-                  />
+                <div className="otp-field mb-4">
+                  {refs.map((ref: any, index: number) => {
+                    return (
+                      <input
+                        type="number"
+                        autoComplete="off"
+                        key={index}
+                        onPaste={pasteHandler}
+                        id={String(index)}
+                        onChange={changeHandler}
+                        onFocus={onFocus}
+                        ref={refs[index]}
+                        onKeyDown={onKeydown}
+                        value={otp[index]}
+                      />
+                    );
+                  })}
                 </div>
                 <div className="mt-3">
                   <small className="text-secondary">
                     Didn’t get the code?{" "}
                     <span
-                      onClick={() => {}}
+                      onClick={resendOtp}
                       className="text-primary"
                       role="button"
                     >
@@ -121,8 +146,12 @@ export default function Otp() {
             <CardFooter>
               <div className="footer text-end">
                 <button
+                  disabled={
+                    otp.join("").length !== refs.length && refs.length > 0
+                  }
                   className="btn btn-primary btn-icon rft"
                   ref={submitButton}
+                  onClick={handleOnSubmit}
                 >
                   Continue {""}
                   <ArrowRight />

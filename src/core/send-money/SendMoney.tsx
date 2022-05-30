@@ -13,14 +13,16 @@ import { dispatchEvent } from "../../actions";
 import { IOption } from "../../interfaces/common";
 import {
   initialValues,
+  RateInterface,
   TodayRateInterface,
   TransactionPayload,
   TransactionSchema,
 } from "../../schema/transaction.schema";
 import Button from "../../components/LoadingButton";
-import { FilesUpload } from "../../components/FileUploader";
+import { FileInterface, FilesUpload } from "../../components/FileUploader";
 import UploadYourKyc from "../../components/UploadYourKyc";
 import { LoggedInUser } from "../../interfaces/User";
+import TokenService from "../../services/TokenService";
 
 const SendMoney = () => {
   return (
@@ -52,21 +54,26 @@ function NoTodayRate(props: TodayRateProps) {
 }
 
 function Render() {
-  const [beneficiaries, setBeneficiaries] = useState<Array<IOption>>([]);
+  const [beneficiaries, setBeneficiaries] = useState([]);
   const [todayRate, setTodayRate] = useState<TodayRateInterface>();
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<FileInterface[]>([]);
   const [user, setUser] = useState<LoggedInUser>();
 
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleOnSubmit = async (
     values: TransactionPayload,
-    formikHelpers: FormikHelpers<TransactionPayload>
+    { setSubmitting, setErrors }: FormikHelpers<TransactionPayload>
   ) => {
-    values.files = uploadedFiles;
-    formikHelpers.setSubmitting(true);
-    await dispatchEvent("SEND_MONEY", values, {}, formikHelpers.setErrors);
-    formikHelpers.setSubmitting(false);
+    if (!uploadedFiles.length)
+      return setErrors({
+        files: "Please upload the screenshot of your payment.",
+      });
+
+    values.files = uploadedFiles?.map((f) => f.file);
+    setSubmitting(true);
+    await dispatchEvent("SEND_MONEY", values, {}, setErrors);
+    setSubmitting(false);
   };
 
   useEffect(() => {
@@ -74,21 +81,52 @@ function Render() {
     Promise.all([
       dispatchEvent("USER_DETAIL", {}),
       dispatchEvent("TODAY_RATE_V2", {}),
-      dispatchEvent("MASTER_DATA", {}, { type: "identity-issuers" }),
+      dispatchEvent("BENEFICIARY_LIST", {}),
     ]).then((response) => {
-      console.log(response[0].data.user);
       setUser(response[0].data.user);
       setTodayRate(response[1].data);
-      let data: IOption[] = response[2].data?.map((item: any) => {
-        return {
-          id: item.id,
-          value: item.name + " [ " + item.relationship + " ]",
-        };
-      });
-      setBeneficiaries(data);
+      setBeneficiaries(response[2].data);
       setLoading(false);
     });
   }, []);
+
+  const onBeneficiarySelect = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: (
+      field: string,
+      value: any,
+      shouldValidate?: boolean | undefined
+    ) => void
+  ) => {
+    setFieldValue("beneficiary_id", e.target.value);
+    let beneficiary: any = beneficiaries.find(
+      (b: any) => e.target.value == b.id
+    );
+    setFieldValue("beneficiary_bank_id", beneficiary?.beneficiary_bank_id);
+  };
+  const onChangeSendingAmount = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: (
+      field: string,
+      value: any,
+      shouldValidate?: boolean | undefined
+    ) => void
+  ) => {
+    let sending_amount = e.target.value;
+    setFieldValue("sending_amount", sending_amount);
+    let rates = todayRate?.rate ?? [];
+    let rate: RateInterface | undefined = rates.find(
+      (rate) => Number(sending_amount) >= rate["min_range"]
+    );
+    if (rate && rate.rate) {
+      let receiving_amount = Number(sending_amount) * rate.rate;
+      setFieldValue("receiving_amount", receiving_amount);
+      setFieldValue("rate", rate.rate);
+    } else {
+      setFieldValue("receiving_amount", 0);
+      setFieldValue("rate", 0);
+    }
+  };
 
   let message = todayRate?.errorMessage;
   if (loading) return <SendMoneySpinner />;
@@ -118,6 +156,7 @@ function Render() {
           handleChange,
           isSubmitting,
           values,
+          setFieldValue,
         }) => (
           <Form autoComplete="off">
             <div className="box-body">
@@ -131,7 +170,7 @@ function Render() {
                       placeholder="Enter Receiver name"
                       errors={errors}
                       touched={touched}
-                      onChange={handleChange}
+                      onChange={(e) => onBeneficiarySelect(e, setFieldValue)}
                       invalid={
                         errors.beneficiary_id && touched.beneficiary_id
                           ? true
@@ -140,11 +179,18 @@ function Render() {
                       onBlur={handleBlur}
                     >
                       <option>----SELECT RECEIVER----</option>
-                      {beneficiaries.map((option: IOption) => (
-                        <option key={option.id} value={option.id}>
-                          {option.value}
-                        </option>
-                      ))}
+                      {beneficiaries
+                        .map((b: any) => {
+                          return {
+                            id: b.id,
+                            value: b.name + " [ " + b.relationship + "]",
+                          };
+                        })
+                        .map((option: IOption) => (
+                          <option key={option.id} value={option.id}>
+                            {option.value}
+                          </option>
+                        ))}
                     </Input>
                     {errors.beneficiary_id && touched.beneficiary_id ? (
                       <FormFeedback>{errors.beneficiary_id}</FormFeedback>
@@ -157,12 +203,12 @@ function Render() {
                   <FormGroup>
                     <Label for="name">Sending Amount (AUD)</Label>
                     <Input
-                      type="text"
+                      type="number"
                       name="sending_amount"
                       placeholder="Enter Sending amount"
                       errors={errors}
                       touched={touched}
-                      onChange={handleChange}
+                      onChange={(e) => onChangeSendingAmount(e, setFieldValue)}
                       invalid={
                         errors.sending_amount && touched.sending_amount
                           ? true
@@ -179,7 +225,7 @@ function Render() {
                   <FormGroup>
                     <Label for="rate">Today Rate</Label>
                     <Input
-                      type="text"
+                      type="number"
                       readOnly
                       name="rate"
                       value={values.rate}
@@ -223,14 +269,13 @@ function Render() {
                   <FormGroup>
                     <Label for="rate">Receiving Amount (NPR)</Label>
                     <Input
-                      type="text"
+                      type="number"
                       readOnly
                       value={values.receiving_amount}
                       name="receiving_amount"
                       placeholder="Receiving Amount"
                       errors={errors}
                       touched={touched}
-                      onChange={handleChange}
                       invalid={
                         errors.receiving_amount && touched.receiving_amount
                           ? true
@@ -250,6 +295,7 @@ function Render() {
                 <FilesUpload
                   setUploadedFiles={setUploadedFiles}
                   uploadedFiles={uploadedFiles}
+                  error={errors.files}
                 />
               </Row>
             </div>

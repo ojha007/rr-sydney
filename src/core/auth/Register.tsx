@@ -20,6 +20,7 @@ import {
   RegisterPayload,
 } from "../../schema/auth.schema";
 import { dispatchEvent } from "../../actions";
+import TokenService from "../../services/TokenService";
 export default function Register() {
   let navigate = useNavigate();
   const handleOnSubmit = async (
@@ -34,7 +35,10 @@ export default function Register() {
       formikHelpers.setErrors
     );
     formikHelpers.setSubmitting(false);
-    if (r.success) navigate("/email-otp");
+    if (r.success) {
+      TokenService.setToken(r.data);
+      navigate("/email-otp");
+    }
   };
 
   return (

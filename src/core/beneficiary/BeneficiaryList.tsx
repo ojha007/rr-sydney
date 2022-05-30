@@ -3,13 +3,17 @@ import { PencilSquare, Plus, Trash3 } from "react-bootstrap-icons";
 import { Button, Col, Table } from "reactstrap";
 import { dispatchEvent } from "../../actions";
 import { NoRecordFoundTR, OnLoadingTr } from "../../components/NoRecordFound";
-import { BeneficiaryPayload } from "../../schema/beneficiary.schema";
+import {
+  BeneficiaryPayload,
+  initialValues,
+} from "../../schema/beneficiary.schema";
 import BeneficiaryForm from "./BeneficiaryForm";
 
 const BeneficiaryList = () => {
   const [showModal, setShowModal] = useState(false);
   const [beneficiaries, setBeneficiaries] = useState([]);
-  const [beneficiary, setBeneficiary] = useState<BeneficiaryPayload>();
+  const [beneficiary, setBeneficiary] =
+    useState<BeneficiaryPayload>(initialValues);
   const [loading, setLoading] = useState(true);
   const handleModalClose = () => setShowModal(false);
   const handleModalShow = () => setShowModal(true);
@@ -54,7 +58,10 @@ const BeneficiaryList = () => {
         <Button
           title="Add Beneficiary"
           className="btn-sm btn-primary pull-right"
-          onClick={handleModalShow}
+          onClick={() => {
+            handleModalShow();
+            setBeneficiary(initialValues);
+          }}
         >
           <Plus className="bi me-1" />
           Add Beneficiary

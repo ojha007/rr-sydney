@@ -3,9 +3,16 @@ import { useRef } from "react";
 import { Trash, Upload } from "react-bootstrap-icons";
 import { FormFeedback } from "reactstrap";
 
+export interface FileInterface {
+  name: string;
+  size: string;
+  image_base64: string;
+  file: FileInterface;
+}
+
 interface FilesUploader {
   setUploadedFiles: Function;
-  uploadedFiles: File[];
+  uploadedFiles: FileInterface[];
   error?:
     | string
     | string[]
@@ -20,12 +27,16 @@ interface FileUploader {
 }
 const FilesUpload = (props: FilesUploader) => {
   const fileRef = useRef<HTMLInputElement>(null);
+  let message = "";
+  if (typeof props.error === "string") message = props.error;
+  if (Array.isArray(props.error)) message = props.error.join(" || ");
   const handleFileUpload = (e: any) => {
     if (e.target.files) {
-      const file = {
+      const file: FileInterface = {
         name: e.target.files[0].name,
         size: e.target.files[0].size,
-        image: URL.createObjectURL(e.target.files[0]),
+        image_base64: URL.createObjectURL(e.target.files[0]),
+        file: e.target.files[0],
       };
       props.setUploadedFiles([...props.uploadedFiles, file]);
     }
@@ -39,15 +50,19 @@ const FilesUpload = (props: FilesUploader) => {
   return (
     <>
       {props.uploadedFiles.length <= 0 && (
-        <div className="file-upload" onClick={() => fileRef.current?.click()}>
-          <label className="text-center" htmlFor="file">
+        <div
+          className="file-upload"
+          onClick={() => fileRef.current?.click()}
+          role="button"
+        >
+          <label className="text-center" role="button" htmlFor="file">
             <Upload />
             <p>
               Drag and Drop Image here or{" "}
               <span
                 className="text-primary text-underline"
                 role="button"
-                onClick={() => fileRef.current?.click()}
+                onClick={() => {}}
               >
                 browse {""}
               </span>
@@ -68,10 +83,14 @@ const FilesUpload = (props: FilesUploader) => {
           />
         </div>
       )}
+      {props.error ? (
+        <FormFeedback style={{ display: "block" }}>{message}</FormFeedback>
+      ) : null}
       {props.uploadedFiles && props.uploadedFiles.length > 0 && (
         <div
           className="file-upload mt-3 p-2"
           onClick={() => fileRef.current?.click()}
+          role="button"
         >
           <input
             className="d-none"
@@ -89,14 +108,14 @@ const FilesUpload = (props: FilesUploader) => {
       )}
       {props.uploadedFiles &&
         props.uploadedFiles.length > 0 &&
-        props.uploadedFiles.map((file: any, index: number) => {
+        props.uploadedFiles.map((file: FileInterface, index: number) => {
           return (
             <div
               className="d-flex justify-content-between flex-wrap mt-3 file-list"
               key={index}
             >
               <div className="align-vertical">
-                <img src={file.image} alt="" className="file-image" />
+                <img src={file.image_base64} alt="" className="file-image" />
                 <h6 className="ml-3">{file.name}</h6>
               </div>
 
@@ -116,10 +135,8 @@ const FilesUpload = (props: FilesUploader) => {
 };
 
 const FileUpload = (props: FileUploader) => {
-  console.log(props);
   const fileRef = useRef<HTMLInputElement>(null);
   let message = props.error;
-  console.log(props.error ? (props.error as any) : "");
   const handleFileUpload = (e: any) => {
     if (e.target.files) {
       const file = {
@@ -141,7 +158,10 @@ const FileUpload = (props: FileUploader) => {
             <span
               className="text-primary text-underline"
               role="button"
-              onClick={() => fileRef.current?.click()}
+              onClick={(e) => {
+                fileRef.current?.click();
+                e.stopPropagation();
+              }}
             >
               browse {""}
             </span>
@@ -169,7 +189,7 @@ const FileUpload = (props: FileUploader) => {
           <div className="align-vertical">
             <img
               src={props.uploadedFile.image_base64}
-              alt=""
+              alt="User KYC FILE"
               className="file-image"
             />
             <h6 className="ml-3">{props.uploadedFile.name}</h6>

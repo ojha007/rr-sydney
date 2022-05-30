@@ -43,12 +43,12 @@ const KYCForm = () => {
 
   const handleOnSubmit = async (
     values: KYCPayload,
-    formikHelpers: FormikHelpers<KYCPayload>
+    { setSubmitting, setErrors }: FormikHelpers<KYCPayload>
   ) => {
-    formikHelpers.setSubmitting(true);
+    setSubmitting(true);
     values.file = uploadedFile?.file;
-    await dispatchEvent("KYC_POST", values, undefined, formikHelpers.setErrors);
-    formikHelpers.setSubmitting(false);
+    await dispatchEvent("KYC_POST", values, undefined, setErrors);
+    setSubmitting(false);
   };
   return (
     <TabPane tabId="KYC">

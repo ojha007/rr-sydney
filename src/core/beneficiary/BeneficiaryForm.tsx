@@ -18,7 +18,6 @@ import { IOption } from "../../interfaces/common";
 import {
   BeneficiaryPayload,
   BeneficiarySchema,
-  initialValues,
 } from "../../schema/beneficiary.schema";
 import Button from "../../components/LoadingButton";
 
@@ -26,7 +25,7 @@ interface BeneficiaryFormInterface extends ModalProps {
   handleClose: any;
   title?: string;
   saveText?: string;
-  beneficiary?: BeneficiaryPayload | undefined;
+  beneficiary: BeneficiaryPayload;
   fetchAllBeneficiaries: Function;
 }
 const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
@@ -82,7 +81,7 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
       onSubmit={(values, formikHelpers) =>
         handleOnSubmit(values, formikHelpers)
       }
-      initialValues={props.beneficiary ? props.beneficiary : initialValues}
+      initialValues={props.beneficiary}
       validationSchema={BeneficiarySchema}
     >
       {({
