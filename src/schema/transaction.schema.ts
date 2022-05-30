@@ -20,6 +20,7 @@ export interface TransactionPayload {
   files: FileInterface[];
   payment_type_id: number;
   beneficiary_bank_id: string;
+  agent_id: string;
 }
 
 export const initialValues: TransactionPayload = {
@@ -31,6 +32,7 @@ export const initialValues: TransactionPayload = {
   files: [],
   payment_type_id: 2,
   beneficiary_bank_id: "",
+  agent_id: "",
 };
 export const TransactionSchema = Yup.object().shape({
   beneficiary_id: Yup.string().required("Beneficiary is required field."),

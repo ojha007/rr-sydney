@@ -51,7 +51,7 @@ const BeneficiaryList = () => {
         isOpen={showModal}
         handleClose={handleModalClose}
         beneficiary={beneficiary}
-        saveText={beneficiary ? "Update" : "Create"}
+        saveText={beneficiary.id ? "Update" : "Create"}
         fetchAllBeneficiaries={fetchAllBeneficiaries}
       />
       <Col className="my-3 d-flex justify-content-end">
