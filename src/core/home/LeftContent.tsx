@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import {
   Speedometer2,
   PersonCircle,
@@ -12,9 +11,6 @@ import { Link, useResolvedPath, useMatch, LinkProps } from "react-router-dom";
 import TokenService from "../../services/TokenService";
 import "../../assets/sass/_sidebar.scss";
 import classNames from "classnames";
-import { Col } from "reactstrap";
-
-// import "../../assets/sass/_sideoverlay.scss";
 
 function SidebarLink({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
@@ -37,13 +33,18 @@ const LeftContent = (props: SideBarProps) => {
 
   return (
     <div className="sidebar d-flex flex-column flex-shrink-0 bg-light">
+      <div
+        className="nav_brand justify-content-center mt-1"
+        role="button"
+        onClick={toggle}
+      >
+        <List className="bi me-2 nav_toggle" />
+      </div>
       <div className="user-profile">
         <div className="text-center">
           <img
             src={avatar ?? require("../../assets/images/fallback-user.jpg")}
-            className={classNames("img-circle", {
-              "w-50 h-50": !isOpen,
-            })}
+            className="img-circle w-50 h-50"
             alt=""
           />
         </div>
@@ -65,9 +66,6 @@ const LeftContent = (props: SideBarProps) => {
         <hr />
       </div>
 
-      <div className="nav_brand" role="button" onClick={toggle}>
-        <List className="bi me-2 nav_toggle" />
-      </div>
       <ul
         className={classNames("nav nav-pills nav-flush flex-column mb-auto", {
           "text-center": !isOpen,
