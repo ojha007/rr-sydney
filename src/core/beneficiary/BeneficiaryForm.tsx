@@ -95,7 +95,9 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
       }) => (
         <Modal size="lg" isOpen={props.isOpen} onClosed={resetForm}>
           <Form autoComplete="off">
-            <ModalHeader>{props.title || "Create Beneficiary"}</ModalHeader>
+            <ModalHeader toggle={props.handleClose}>
+              {props.title || "Create Beneficiary"}
+            </ModalHeader>
             <ModalBody>
               <Row>
                 <Col md={6}>

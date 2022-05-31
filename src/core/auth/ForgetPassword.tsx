@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowLeftRight } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -38,9 +39,11 @@ export default function ForgetPassword() {
                   Send OTP
                 </Button>
               </Form>
-              <Link className="mt-1" to="/login">
-                Back to login
-              </Link>
+              <Row className="mt-2">
+                <Link to="/auth/login">
+                  <ArrowLeft /> Back to login
+                </Link>
+              </Row>
             </CardBody>
           </Card>
         </Col>

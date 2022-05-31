@@ -77,7 +77,7 @@ const transformRequestData = (
   if (apiDetails.requestType === "formData") {
     let formData = new FormData();
     for (let data in requestData) {
-      if (typeof requestData[data] === "object") {
+      if (Array.isArray(requestData[data])) {
         for (let file in requestData[data]) {
           if (requestData[data][file] instanceof File)
             formData.append("files[]", requestData[data][file]);

@@ -8,14 +8,13 @@ import {
 } from "reactstrap";
 
 // import "../assets/css/home.css";
-// import "../assets/css/fonts.css";
 
 export default function Home() {
   return (
     <>
       <div>
         <header className="section page-header">
-          <div className="rd-navbar-wrap">
+          <div className="rd-navbar-wrap" style={{ height: "100.453px" }}>
             <nav className="rd-navbar rd-navbar-classic">
               <div className="rd-navbar-main-outer">
                 <div className="rd-navbar-main">

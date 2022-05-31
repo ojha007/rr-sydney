@@ -137,19 +137,20 @@ function Setting(): JSX.Element {
               <Row>
                 <Col md={6}>
                   <FormGroup>
-                    <Label for="dob">Date Of Birth</Label>
+                    <Label for="dateOfBirth">Date Of Birth</Label>
                     <DatePicker
-                      selected={new Date(values.dob)}
+                      selected={new Date(values.dateOfBirth)}
                       dateFormat="yyyy-MM-dd"
                       autoComplete="off"
-                      name="dob"
+                      name="dateOfBirth"
                       className="form-control"
-                      onChange={(date: Date) =>
-                        setFieldValue("dob", formatDate(date))
-                      }
+                      onChange={(date: Date) => {
+                        setFieldValue("dob", formatDate(date));
+                        setFieldValue("dateOfBirth", formatDate(date));
+                      }}
                     />
 
-                    {errors.dob && touched.dob ? (
+                    {errors.dateOfBirth && touched.dateOfBirth ? (
                       <FormFeedback>Date of birth is required.</FormFeedback>
                     ) : null}
                   </FormGroup>

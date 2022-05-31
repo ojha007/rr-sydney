@@ -168,7 +168,7 @@ export default function Register() {
                   </Form>
                 )}
               </Formik>
-              <Link to="/login">I already have a membership</Link>
+              <Link to="/auth/login">I already have a membership</Link>
             </CardBody>
           </Card>
         </Col>

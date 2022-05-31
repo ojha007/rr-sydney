@@ -1,18 +1,16 @@
-import { useRoutes } from "react-router";
-import ForgetPassword from "../../core/auth/ForgetPassword";
-import Login from "../../core/auth/Login";
-import Otp from "../../core/auth/Otp";
-import Register from "../../core/auth/Register";
-import Home from "../../core/Home";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import TokenService from "../../services/TokenService";
 
-const PublicRoute = () => {
-  return useRoutes([
-    { path: "/", element: <Home /> },
-    { path: "/login", element: <Login /> },
-    { path: "/register", element: <Register /> },
-    { path: "/forget-password", element: <ForgetPassword /> },
-    { path: "/email-otp", element: <Otp /> },
-  ]);
+const useAuth = () => {
+  const token = TokenService.getAccessToken();
+  if (token) return true;
+  return false;
 };
 
-export default PublicRoute;
+const PublicRoutes = (props: any) => {
+  const auth = useAuth();
+  return auth ? <Navigate to="/dashboard" /> : <Outlet />;
+};
+
+export default PublicRoutes;

@@ -177,6 +177,8 @@ const KYCForm = () => {
                   setUploadedFile={setUploadedFile}
                   uploadedFile={uploadedFile}
                   error={errors.file}
+                  serverFile={userKyc?.file}
+                  fileName={userKyc?.identityType}
                 />
               </Row>
               <Row className="mt-3">

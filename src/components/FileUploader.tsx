@@ -24,6 +24,8 @@ interface FileUploader {
   setUploadedFile: Function;
   uploadedFile: any;
   error?: any;
+  serverFile?: string;
+  fileName?: string;
 }
 const FilesUpload = (props: FilesUploader) => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -109,26 +111,7 @@ const FilesUpload = (props: FilesUploader) => {
       {props.uploadedFiles &&
         props.uploadedFiles.length > 0 &&
         props.uploadedFiles.map((file: FileInterface, index: number) => {
-          return (
-            <div
-              className="d-flex justify-content-between flex-wrap mt-3 file-list"
-              key={index}
-            >
-              <div className="align-vertical">
-                <img src={file.image_base64} alt="" className="file-image" />
-                <h6 className="ml-3">{file.name}</h6>
-              </div>
-
-              <div className="align-vertical">
-                <h5 role="button" className="text-danger btn-ghost ml-3">
-                  <Trash
-                    className="bi me-2 courser-pointer"
-                    onClick={() => handleRemoveFile(index)}
-                  />
-                </h5>
-              </div>
-            </div>
-          );
+          return <ViewFile imageUrl={file.image_base64} name={file.name} />;
         })}
     </>
   );
@@ -137,6 +120,7 @@ const FilesUpload = (props: FilesUploader) => {
 const FileUpload = (props: FileUploader) => {
   const fileRef = useRef<HTMLInputElement>(null);
   let message = props.error;
+
   const handleFileUpload = (e: any) => {
     if (e.target.files) {
       const file = {
@@ -184,32 +168,42 @@ const FileUpload = (props: FileUploader) => {
       {props.error ? (
         <FormFeedback style={{ display: "block" }}>{message}</FormFeedback>
       ) : null}
+      {props.serverFile && !props.uploadedFile ? (
+        <ViewFile imageUrl={props.serverFile} name={props.fileName} />
+      ) : (
+        ""
+      )}
       {props.uploadedFile ? (
-        <div className="d-flex justify-content-between flex-wrap mt-3 file-list">
-          <div className="align-vertical">
-            <img
-              src={props.uploadedFile.image_base64}
-              alt="User KYC FILE"
-              className="file-image"
-            />
-            <h6 className="ml-3">{props.uploadedFile.name}</h6>
-          </div>
-
-          <div className="align-vertical">
-            <h5 role="button" className="text-danger btn-ghost ml-3">
-              <Trash
-                className="bi me-2 courser-pointer"
-                onClick={() => {
-                  console.log("AA");
-                }}
-              />
-            </h5>
-          </div>
-        </div>
+        <ViewFile
+          imageUrl={props.uploadedFile.image_base64}
+          name={props.uploadedFile.name}
+        />
       ) : (
         ""
       )}
     </>
+  );
+};
+
+const ViewFile = (props: any) => {
+  return (
+    <div className="d-flex justify-content-between flex-wrap mt-3 file-list">
+      <div className="align-vertical">
+        <img src={props.imageUrl} alt="User KYC FILE" className="file-image" />
+        <h6 className="ml-3">{props.name}</h6>
+      </div>
+
+      <div className="align-vertical">
+        <h5 role="button" className="text-danger btn-ghost ml-3">
+          <Trash
+            className="bi me-2 courser-pointer"
+            onClick={() => {
+              console.log("AA");
+            }}
+          />
+        </h5>
+      </div>
+    </div>
   );
 };
 

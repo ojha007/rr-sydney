@@ -5,6 +5,8 @@ import {
   ClockHistory,
   PeopleFill,
   BoxArrowRight,
+  Hammer,
+  List,
 } from "react-bootstrap-icons";
 import { Link, useResolvedPath, useMatch, LinkProps } from "react-router-dom";
 import TokenService from "../../services/TokenService";
@@ -23,10 +25,7 @@ function SidebarLink({ children, to, ...props }: LinkProps) {
 export default function LeftContent() {
   let avatar = TokenService.getAuthUser()?.avatar;
   return (
-    <div
-      className="d-flex flex-column flex-shrink-0 p-3 bg-white"
-      style={{ width: "280px" }}
-    >
+    <div className="d-flex flex-column flex-shrink-0 p-3 bg-white">
       <div className="text-center">
         <img
           src={
@@ -46,35 +45,38 @@ export default function LeftContent() {
         {TokenService.getAuthUser().phone}
       </p>
       <hr />
+      <div className="nav_brand">
+        <List className="bi me-2 nav_toggle" />
+      </div>
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item ">
           <SidebarLink to="/dashboard" aria-current="page">
             <Speedometer2 className="bi me-2" />
-            Dashboard
+            <span className="nav_name">Dashboard</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="send-money" aria-current="page">
             <Send className="bi me-2" />
-            Send Money
+            <span className="nav_name">Send Money</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="history" aria-current="page">
             <ClockHistory className="bi me-2" />
-            History
+            <span className="nav_name">History</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="beneficiary" aria-current="page">
             <PeopleFill className="bi me-2" />
-            Beneficiary
+            <span className="nav_name">Beneficiary</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="profile" aria-current="page">
             <PersonCircle className="bi me-2" />
-            Profile
+            <span className="nav_name">Profile</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
@@ -84,7 +86,7 @@ export default function LeftContent() {
             onClick={() => TokenService.clearToken()}
           >
             <BoxArrowRight className="bi me-2" />
-            Logout
+            <span className="nav_name">Logout</span>
           </SidebarLink>
         </li>
       </ul>

@@ -114,9 +114,9 @@ export default function Login() {
                   </>
                 )}
               </Formik>
-              <Link to="/forget-password">Forget Your Password?</Link>
-              <div className="clearfix"></div>
-              <Link to="/register">Register a new membership</Link>
+              <Link to="/auth/forget-password">Forget Your Password?</Link>
+              <div className="clearfix mt-1"></div>
+              <Link to="/auth/register">Register a new membership</Link>
             </CardBody>
           </Card>
         </Col>

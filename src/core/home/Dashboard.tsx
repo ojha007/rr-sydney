@@ -6,14 +6,13 @@ import RightContent from "./RightContext";
 
 export default function Dashboard() {
   return (
-    <Container>
+    <Container className="primary-screen">
       <NavBar />
-      <Row>
-        <ToastContainer />
-        <Col md="3" className="mt-3">
+      <Row className="mt-3">
+        <Col md={3} sm={3}>
           <LeftContent />
         </Col>
-        <Col md="9" sm="12" className="mt-3 primary-screen">
+        <Col md={9} sm={9}>
           <RightContent />
         </Col>
       </Row>
