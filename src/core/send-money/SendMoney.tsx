@@ -22,7 +22,6 @@ import Button from "../../components/LoadingButton";
 import { FileInterface, FilesUpload } from "../../components/FileUploader";
 import UploadYourKyc from "../../components/UploadYourKyc";
 import { LoggedInUser } from "../../interfaces/User";
-import TokenService from "../../services/TokenService";
 
 const SendMoney = () => {
   return (
@@ -69,8 +68,8 @@ function Render() {
       return setErrors({
         files: "Please upload the screenshot of your payment.",
       });
-
     values.files = uploadedFiles?.map((f) => f.file);
+    values.agent_id = process.env.REACT_APP_AGENT_ID;
     setSubmitting(true);
     await dispatchEvent("SEND_MONEY", values, {}, setErrors);
     setSubmitting(false);
@@ -100,7 +99,7 @@ function Render() {
   ) => {
     setFieldValue("beneficiary_id", e.target.value);
     let beneficiary: any = beneficiaries.find(
-      (b: any) => e.target.value == b.id
+      (b: any) => Number(e.target.value) === Number(b.id)
     );
     setFieldValue("beneficiary_bank_id", beneficiary?.beneficiary_bank_id);
   };

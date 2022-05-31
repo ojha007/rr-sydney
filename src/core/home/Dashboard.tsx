@@ -3,7 +3,6 @@ import { Col, Container, Row } from "reactstrap";
 import LeftContent from "./LeftContent";
 import NavBar from "./Navbar";
 import RightContent from "./RightContext";
-import classNames from "classnames";
 
 export default function Dashboard() {
   const [sidebarIsOpen, setSidebarOpen] = useState<boolean>(true);

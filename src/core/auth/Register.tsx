@@ -28,6 +28,7 @@ export default function Register() {
     formikHelpers: FormikHelpers<RegisterPayload>
   ) => {
     formikHelpers.setSubmitting(true);
+    values.created_by = process.env.REACT_APP_AGENT_ID;
     let r = await dispatchEvent(
       "REGISTER",
       values,

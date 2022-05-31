@@ -1,4 +1,4 @@
-import React, { ReactElement, RefObject, useEffect, useRef } from "react";
+import React, { RefObject, useRef } from "react";
 import { ArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router";
 import {
@@ -11,7 +11,6 @@ import {
   Container,
   Row,
 } from "reactstrap";
-import { ref } from "yup";
 import { dispatchEvent } from "../../actions";
 
 export default function Otp() {
@@ -25,7 +24,7 @@ export default function Otp() {
     if (
       e.key === "Backspace" &&
       selectedInputId > 0 &&
-      otp[selectedInputId] == ""
+      otp[selectedInputId] === ""
     ) {
       let updatedOtp = [...otp];
       updatedOtp[selectedInputId - 1] = "";
@@ -88,7 +87,7 @@ export default function Otp() {
       if (+char >= 0 && +char <= 9 && tempSelectedInputId < refs.length) {
         updatedOtp[tempSelectedInputId] = char;
 
-        if (!(tempSelectedInputId == refs.length - 1)) {
+        if (!(Number(tempSelectedInputId) === refs.length - 1)) {
           tempSelectedInputId++;
         }
       }

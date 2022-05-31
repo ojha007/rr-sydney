@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowLeftRight } from "react-bootstrap-icons";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import {
   Button,

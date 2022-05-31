@@ -27,7 +27,6 @@ function Setting(): JSX.Element {
   const fetchLoggedInUser = async () => {
     let response = await dispatchEvent("USER_DETAIL", {});
     setAuthUser(response.data.user);
-    console.log(authUser);
   };
 
   useEffect(() => {
@@ -38,7 +37,6 @@ function Setting(): JSX.Element {
     values: ProfilePayload,
     formikHelpers: FormikHelpers<ProfilePayload>
   ) => {
-    console.log(values);
     formikHelpers.setSubmitting(true);
     await dispatchEvent("UPDATE_PROFILE", values, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);

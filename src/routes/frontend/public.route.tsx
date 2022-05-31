@@ -1,16 +1,23 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { LoggedInUser } from "../../interfaces/User";
 import TokenService from "../../services/TokenService";
 
 const useAuth = () => {
-  const token = TokenService.getAccessToken();
-  if (token) return true;
-  return false;
+  const user: LoggedInUser = TokenService.getAuthUser();
+  return user;
 };
 
 const PublicRoutes = (props: any) => {
+  let location = useLocation();
   const auth = useAuth();
-  return auth ? <Navigate to="/dashboard" /> : <Outlet />;
+  if (auth && !auth.isEmailVerified && location.pathname === "/auth/email-otp")
+    return <Outlet />;
+  return auth && auth.isEmailVerified ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <Outlet />
+  );
 };
 
 export default PublicRoutes;

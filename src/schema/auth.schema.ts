@@ -9,15 +9,20 @@ export interface RegisterPayload {
   confirmPassword: string;
   name: string;
   phone: string;
+  created_by: string | undefined;
 }
 
-export const LoginInitialValues: LoginPayload = { email: "", password: "" };
+export const LoginInitialValues: LoginPayload = {
+  email: "",
+  password: "",
+};
 export const RegisterInitialValues: RegisterPayload = {
   email: "",
   password: "",
   confirmPassword: "",
   name: "",
   phone: "",
+  created_by: "",
 };
 export const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Email is invalid").required("Email is required"),

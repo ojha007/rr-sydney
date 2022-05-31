@@ -20,7 +20,7 @@ export interface TransactionPayload {
   files: FileInterface[];
   payment_type_id: number;
   beneficiary_bank_id: string;
-  agent_id: string;
+  agent_id: string | undefined;
 }
 
 export const initialValues: TransactionPayload = {
