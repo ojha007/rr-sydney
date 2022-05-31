@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import {
   Speedometer2,
   PersonCircle,
@@ -5,11 +6,15 @@ import {
   ClockHistory,
   PeopleFill,
   BoxArrowRight,
-  Hammer,
   List,
 } from "react-bootstrap-icons";
 import { Link, useResolvedPath, useMatch, LinkProps } from "react-router-dom";
 import TokenService from "../../services/TokenService";
+import "../../assets/sass/_sidebar.scss";
+import classNames from "classnames";
+import { Col } from "reactstrap";
+
+// import "../../assets/sass/_sideoverlay.scss";
 
 function SidebarLink({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
@@ -22,61 +27,84 @@ function SidebarLink({ children, to, ...props }: LinkProps) {
   );
 }
 
-export default function LeftContent() {
+interface SideBarProps {
+  isOpen: boolean;
+  toggle: () => void;
+}
+const LeftContent = (props: SideBarProps) => {
   let avatar = TokenService.getAuthUser()?.avatar;
+  const { isOpen, toggle } = props;
+
   return (
-    <div className="d-flex flex-column flex-shrink-0 p-3 bg-white">
-      <div className="text-center">
-        <img
-          src={
-            avatar ? avatar : require("../../assets/images/fallback-user.jpg")
-          }
-          className="img-circle"
-          alt=""
-        />
+    <div className="sidebar d-flex flex-column flex-shrink-0 bg-light">
+      <div className="user-profile">
+        <div className="text-center">
+          <img
+            src={avatar ?? require("../../assets/images/fallback-user.jpg")}
+            className={classNames("img-circle", {
+              "w-50 h-50": !isOpen,
+            })}
+            alt=""
+          />
+        </div>
+        {isOpen ? (
+          <>
+            <h3 className="profile-username text-center">
+              {TokenService.getAuthUser().name}
+            </h3>
+            <p className="text-muted text-center m-1 mt-0">
+              {TokenService.getAuthUser().email}
+            </p>
+            <p className="text-muted text-center m-1 mt-0">
+              {TokenService.getAuthUser().phone}
+            </p>
+          </>
+        ) : (
+          ""
+        )}
+        <hr />
       </div>
-      <h3 className="profile-username text-center">
-        {TokenService.getAuthUser().name}
-      </h3>
-      <p className="text-muted text-center m-1 mt-0">
-        {TokenService.getAuthUser().email}
-      </p>
-      <p className="text-muted text-center m-1 mt-0">
-        {TokenService.getAuthUser().phone}
-      </p>
-      <hr />
-      <div className="nav_brand">
+
+      <div className="nav_brand" role="button" onClick={toggle}>
         <List className="bi me-2 nav_toggle" />
       </div>
-      <ul className="nav nav-pills flex-column mb-auto">
+      <ul
+        className={classNames("nav nav-pills nav-flush flex-column mb-auto", {
+          "text-center": !isOpen,
+        })}
+      >
         <li className="nav-item ">
           <SidebarLink to="/dashboard" aria-current="page">
             <Speedometer2 className="bi me-2" />
-            <span className="nav_name">Dashboard</span>
+            <span className={classNames({ "d-none": !isOpen })}>Dashboard</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="send-money" aria-current="page">
             <Send className="bi me-2" />
-            <span className="nav_name">Send Money</span>
+            <span className={classNames({ "d-none": !isOpen })}>
+              Send Money
+            </span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="history" aria-current="page">
             <ClockHistory className="bi me-2" />
-            <span className="nav_name">History</span>
+            <span className={classNames({ "d-none": !isOpen })}>History</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="beneficiary" aria-current="page">
             <PeopleFill className="bi me-2" />
-            <span className="nav_name">Beneficiary</span>
+            <span className={classNames({ "d-none": !isOpen })}>
+              Beneficiary
+            </span>
           </SidebarLink>
         </li>
         <li className="nav-item">
           <SidebarLink to="profile" aria-current="page">
             <PersonCircle className="bi me-2" />
-            <span className="nav_name">Profile</span>
+            <span className={classNames({ "d-none": !isOpen })}>Profile</span>
           </SidebarLink>
         </li>
         <li className="nav-item">
@@ -86,10 +114,12 @@ export default function LeftContent() {
             onClick={() => TokenService.clearToken()}
           >
             <BoxArrowRight className="bi me-2" />
-            <span className="nav_name">Logout</span>
+            <span className={classNames({ "d-none": !isOpen })}>Logout</span>
           </SidebarLink>
         </li>
       </ul>
     </div>
   );
-}
+};
+
+export default LeftContent;

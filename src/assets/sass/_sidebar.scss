@@ -1,0 +1,21 @@
+.main-sidebar {
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  z-index: 810;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+@media (max-width: 767px) {
+  .sidebar-open .main-sidebar {
+    transform: translate(0, 0);
+  }
+  .main-sidebar {
+    transform: translate(-230px, 0);
+  }
+  .nav_name {
+    display: none;
+  }
+  .user-profile {
+    display: none;
+  }
+}
