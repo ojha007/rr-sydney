@@ -20,8 +20,6 @@ export interface SuccessResponse {
 // Auth and URL configs
 let url: string = process.env.REACT_APP_BACKEND_ENDPOINT || "";
 
-console.log(process.env);
-
 function getToken() {
   let access_token = "";
   const storedToken: string = TokenService.getAccessToken();
