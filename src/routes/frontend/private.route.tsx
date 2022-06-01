@@ -10,7 +10,6 @@ const useAuth = () => {
 };
 
 const ProtectedRoutes = (props: any) => {
-  console.log(props, "EEEE");
   const auth = useAuth();
   if (auth) {
     if (auth.isEmailVerified) return <Outlet />;

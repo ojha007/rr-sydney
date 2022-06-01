@@ -106,14 +106,14 @@ const LeftContent = (props: SideBarProps) => {
           </SidebarLink>
         </li>
         <li className="nav-item">
-          <SidebarLink
-            to="/"
+          <a
+            href="https://registeredremitsydney.com.au"
             aria-current="page"
             onClick={() => TokenService.clearToken()}
           >
             <BoxArrowRight className="bi me-2" />
             <span className={classNames({ "d-none": !isOpen })}>Logout</span>
-          </SidebarLink>
+          </a>
         </li>
       </ul>
     </div>
