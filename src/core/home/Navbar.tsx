@@ -4,7 +4,7 @@ export default function NavBar() {
   return (
     <Navbar color="light" expand="md" light>
       <Col>
-        <NavbarBrand href="/">
+        <NavbarBrand href="https://registeredremitsydney.com.au">
           <img
             src="https://registeredremitsydney.com.au/images/rrs-logo.png"
             alt="REGISTERED REMIT SYDNEY"
