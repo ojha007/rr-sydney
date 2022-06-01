@@ -107,6 +107,7 @@ const LeftContent = (props: SideBarProps) => {
         </li>
         <li className="nav-item">
           <a
+            className="nav-link"
             href="https://registeredremitsydney.com.au"
             aria-current="page"
             onClick={() => TokenService.clearToken()}
