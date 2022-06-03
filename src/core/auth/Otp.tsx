@@ -12,6 +12,8 @@ import {
   Row,
 } from "reactstrap";
 import { dispatchEvent } from "../../actions";
+import { LoggedInUser } from "../../interfaces/User";
+import TokenService from "../../services/TokenService";
 
 export default function Otp() {
   let navigate = useNavigate();
@@ -72,8 +74,14 @@ export default function Otp() {
     if (otp.length < 5) {
       alert("Invalid otp");
     }
+
     let r = await dispatchEvent("EMAIL_OTP_VERIFY", { otp: otp.join("") });
-    if (r.success) navigate("/dashboard/profile");
+    if (r.success) {
+      let user: LoggedInUser = TokenService.getAuthUser();
+      user.isEmailVerified = true;
+      await TokenService.setAuthUser(user);
+      navigate("/dashboard/profile");
+    }
   };
 
   const pasteHandler: React.ClipboardEventHandler<HTMLInputElement> = (e) => {

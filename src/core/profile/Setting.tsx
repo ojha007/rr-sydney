@@ -38,7 +38,9 @@ function Setting(): JSX.Element {
     formikHelpers: FormikHelpers<ProfilePayload>
   ) => {
     formikHelpers.setSubmitting(true);
-    await dispatchEvent("UPDATE_PROFILE", values, {}, formikHelpers.setErrors);
+    let payload = Object.assign({}, values);
+    payload.dob = formatDate(payload.dob);
+    await dispatchEvent("UPDATE_PROFILE", payload, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
   };
 
@@ -135,20 +137,19 @@ function Setting(): JSX.Element {
               <Row>
                 <Col md={6}>
                   <FormGroup>
-                    <Label for="dateOfBirth">Date Of Birth</Label>
+                    <Label for="dob">Date Of Birth</Label>
                     <DatePicker
-                      selected={new Date(values.dateOfBirth)}
+                      selected={new Date(values.dob)}
                       dateFormat="yyyy-MM-dd"
                       autoComplete="off"
-                      name="dateOfBirth"
+                      name="dob"
                       className="form-control"
                       onChange={(date: Date) => {
                         setFieldValue("dob", formatDate(date));
-                        setFieldValue("dateOfBirth", formatDate(date));
                       }}
                     />
 
-                    {errors.dateOfBirth && touched.dateOfBirth ? (
+                    {errors.dob && touched.dob ? (
                       <FormFeedback>Date of birth is required.</FormFeedback>
                     ) : null}
                   </FormGroup>

@@ -19,6 +19,8 @@ import {
   LoginInitialValues,
   LoginPayload,
 } from "../../schema/auth.schema";
+import { LoggedInUser } from "../../interfaces/User";
+import TokenService from "../../services/TokenService";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -30,7 +32,11 @@ export default function Login() {
     formikHelpers.setSubmitting(true);
     let r = await dispatchEvent("LOGIN", values, {}, formikHelpers.setErrors);
     formikHelpers.setSubmitting(false);
-    if (r.success) navigate("/dashboard");
+    if (r.success) {
+      let user: LoggedInUser = TokenService.getAuthUser();
+      if (user.isKycVerified !== "VERIFIED") navigate("/dashboard/profile");
+      else navigate("/dashboard");
+    }
   };
 
   return (

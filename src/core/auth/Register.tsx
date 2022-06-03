@@ -38,7 +38,7 @@ export default function Register() {
     formikHelpers.setSubmitting(false);
     if (r.success) {
       TokenService.setToken(r.data);
-      navigate("/email-otp");
+      navigate("/auth/email-otp");
     }
   };
 

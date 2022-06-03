@@ -6,13 +6,17 @@ interface AuthTokenService {
   getRefreshToken: Function;
   clearToken: Function;
   getAuthUser: Function;
+  setAuthUser: Function;
 }
 
 function setToken(tokenObj: any) {
-  console.log(tokenObj);
   localStorage.setItem("tk", JSON.stringify(tokenObj));
   localStorage.setItem("access_token", tokenObj.token);
   localStorage.setItem("refresh_token", tokenObj.refresh_token);
+}
+
+function setAuthUser(user: LoggedInUser) {
+  localStorage.setItem("tk", JSON.stringify({ user }));
 }
 
 function getAuthUser(): LoggedInUser {
@@ -52,5 +56,6 @@ const TokenService: AuthTokenService = {
   getRefreshToken: getRefreshToken,
   clearToken: clearToken,
   getAuthUser: getAuthUser,
+  setAuthUser: setAuthUser,
 };
 export default TokenService;

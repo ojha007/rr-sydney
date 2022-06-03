@@ -12,6 +12,7 @@ const useAuth = () => {
 const ProtectedRoutes = (props: any) => {
   const auth = useAuth();
   if (auth) {
+    console.log(auth);
     if (auth.isEmailVerified) return <Outlet />;
     return <Navigate to="/auth/email-otp" />;
   }

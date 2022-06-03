@@ -40,8 +40,7 @@ export interface ProfilePayload {
   name: string;
   email: string;
   phone: string;
-  // dob: Date;
-  dateOfBirth: Date;
+  dob: Date | string;
 }
 
 export const ProfileInitialValues: ProfilePayload = {
@@ -49,11 +48,11 @@ export const ProfileInitialValues: ProfilePayload = {
   name: "",
   email: "",
   phone: "",
-  dateOfBirth: new Date(),
+  dob: new Date(),
 };
 
 export const ProfileSchema = Yup.object().shape({
-  dateOfBirth: Yup.string().required("Date of birth required field."),
+  dob: Yup.string().required("Date of birth required field."),
   email: Yup.string().required("Date of birth required field."),
   gender: Yup.string().required("Gender is required field."),
   name: Yup.string().required("Enter your identity number."),
