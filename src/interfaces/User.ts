@@ -13,4 +13,5 @@ export interface LoggedInUser {
   status: number;
   super: number;
   kycMessage: string;
+  address: boolean;
 }

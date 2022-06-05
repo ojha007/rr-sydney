@@ -15,7 +15,6 @@ import classNames from "classnames";
 function SidebarLink({ children, to, ...props }: LinkProps) {
   let resolved = useResolvedPath(to);
   let match = useMatch({ path: resolved.pathname, end: true });
-
   return (
     <Link className={`nav-link ${match ? "active" : ""}`} to={to} {...props}>
       {children}
@@ -100,7 +99,7 @@ const LeftContent = (props: SideBarProps) => {
           </SidebarLink>
         </li>
         <li className="nav-item">
-          <SidebarLink to="profile" aria-current="page">
+          <SidebarLink to="user/kyc" aria-current="page">
             <PersonCircle className="bi me-2" />
             <span className={classNames({ "d-none": !isOpen })}>Profile</span>
           </SidebarLink>

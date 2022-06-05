@@ -23,7 +23,12 @@ export const dispatchEvent = async (
   let api = Object.assign({}, BackendRoute[action]);
   if (params && Object.keys(params).length) {
     for (const key in params) {
-      api.url = api.url.replaceAll(`{${key}}`, params[key]);
+      // console.log(api.url);
+      if (api.url.includes(key)) {
+        api.url = api.url.replaceAll(`{${key}}`, params[key]);
+      } else {
+        api.url = api.url + "?" + `${key}=${params[key]}`;
+      }
     }
   }
   let response: SuccessResponse | ErrorResponse = await makeApiRequest(

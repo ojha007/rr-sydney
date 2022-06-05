@@ -1,6 +1,6 @@
 import React, { RefObject, useRef } from "react";
 import { ArrowRight } from "react-bootstrap-icons";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import {
   Card,
   CardBody,
@@ -13,9 +13,11 @@ import {
 } from "reactstrap";
 import { dispatchEvent } from "../../actions";
 import { LoggedInUser } from "../../interfaces/User";
+import { ForgetPasswordOtpPayload } from "../../schema/auth.schema";
 import TokenService from "../../services/TokenService";
 
 export default function Otp() {
+  let location = useLocation();
   let navigate = useNavigate();
   const [refs, setRefs] = React.useState<RefObject<HTMLInputElement>[]>([]);
   const [otp, setOtp] = React.useState<any>([]);
@@ -61,7 +63,11 @@ export default function Otp() {
   };
 
   const resendOtp = async () => {
-    await dispatchEvent("RESEND_EMAIL_OTP", {});
+    if (location.state)
+      await dispatchEvent("F_P_RESEND_OTP", {
+        email: location.state as string,
+      });
+    else await dispatchEvent("RESEND_EMAIL_OTP", {});
   };
 
   const onFocus: React.FocusEventHandler<HTMLInputElement> = (e) => {
@@ -74,8 +80,23 @@ export default function Otp() {
     if (otp.length < 5) {
       alert("Invalid otp");
     }
+    let OTP = otp.join("");
+    if (location.state) {
+      let email = location.state as string;
+      let payload: ForgetPasswordOtpPayload = {
+        otp: OTP,
+        email,
+      };
+      let r = await dispatchEvent("F_P_OTP_VERIFY", payload);
+      if (r.success) {
+        navigate("/auth/change-password", {
+          state: email,
+        });
+      }
+      return;
+    }
 
-    let r = await dispatchEvent("EMAIL_OTP_VERIFY", { otp: otp.join("") });
+    let r = await dispatchEvent("EMAIL_OTP_VERIFY", { otp: OTP });
     if (r.success) {
       let user: LoggedInUser = TokenService.getAuthUser();
       user.isEmailVerified = true;

@@ -21,6 +21,7 @@ import {
 } from "../../schema/auth.schema";
 import { dispatchEvent } from "../../actions";
 import TokenService from "../../services/TokenService";
+import AuthHeaderLogo from "../../components/AuthHeaderLogo";
 export default function Register() {
   let navigate = useNavigate();
   const handleOnSubmit = async (
@@ -46,6 +47,7 @@ export default function Register() {
     <Container fluid className="auth-screen h-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col md="3">
+          <AuthHeaderLogo />
           <Card className="background-snow">
             <CardBody>
               <CardTitle className="text-center">

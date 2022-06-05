@@ -42,3 +42,19 @@ export const RegisterSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm Password is required"),
 });
+
+export interface ForgetPasswordIn {
+  email: string;
+}
+
+export const ForgetPasswordInitialValues: ForgetPasswordIn = {
+  email: "",
+};
+export const ForgetPasswordSchema = Yup.object().shape({
+  email: Yup.string().email("Email is invalid").required("Email is required"),
+});
+
+export interface ForgetPasswordOtpPayload {
+  otp: string;
+  email: string;
+}

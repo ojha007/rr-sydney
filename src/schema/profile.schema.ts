@@ -1,3 +1,4 @@
+import { TRUE } from "sass";
 import * as Yup from "yup";
 import { formatDate } from "../lib/DateFormatter";
 export enum Gender {
@@ -79,4 +80,52 @@ export const ChangePasswordSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required("Password Confirmation is required field.")
     .oneOf([Yup.ref("newPassword"), null], "Passwords does not match."),
+});
+
+export interface UserAddressPayload {
+  country_id: string;
+  state_id: string;
+  suburb_id: string;
+  postal_code: string;
+  street: string;
+}
+
+export const UserAddressSchema = Yup.object().shape({
+  country_id: Yup.string().required("Country is required field."),
+  state_id: Yup.string().required("State is required field."),
+  suburb_id: Yup.string().required("Suburb is required field."),
+  street: Yup.string().required("Street is required field."),
+  postal_code: Yup.string().required("Postal code is required field."),
+});
+
+export const UserAddressInitialValues: UserAddressPayload = {
+  country_id: "",
+  state_id: "",
+  suburb_id: "",
+  postal_code: "",
+  street: "",
+};
+
+export interface F_P_PasswordPayload {
+  newPassword: string;
+  confirmPassword: string;
+  email: string;
+  forgetPassword: boolean;
+}
+
+export const F_P_PasswordInitialValues: F_P_PasswordPayload = {
+  newPassword: "",
+  confirmPassword: "",
+  email: "",
+  forgetPassword: true,
+};
+
+export const F_P_PasswordSchema = Yup.object().shape({
+  newPassword: Yup.string()
+    .required("New Password is required field.")
+    .min(6, "New Password should be greater than 6 character."),
+  confirmPassword: Yup.string()
+    .required("Password Confirmation is required field.")
+    .oneOf([Yup.ref("newPassword"), null], "Passwords does not match."),
+  email: Yup.string().required(),
 });

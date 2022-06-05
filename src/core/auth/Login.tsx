@@ -21,6 +21,7 @@ import {
 } from "../../schema/auth.schema";
 import { LoggedInUser } from "../../interfaces/User";
 import TokenService from "../../services/TokenService";
+import AuthHeaderLogo from "../../components/AuthHeaderLogo";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -35,7 +36,8 @@ export default function Login() {
     if (r.success) {
       let user: LoggedInUser = TokenService.getAuthUser();
       if (user.isKycVerified !== "VERIFIED") navigate("/dashboard/profile");
-      else navigate("/dashboard");
+      if (!user.address) navigate("/dashboard/user/address");
+      navigate("/dashboard");
     }
   };
 
@@ -43,6 +45,7 @@ export default function Login() {
     <Container fluid className="auth-screen h-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col md="3">
+          <AuthHeaderLogo />
           <Card className="background-snow">
             <CardBody>
               <CardTitle className="text-center">

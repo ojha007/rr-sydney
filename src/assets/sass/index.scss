@@ -150,6 +150,13 @@ a {
   object-position: center right;
 }
 
+.auth-logo {
+  font-size: 35px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
@@ -180,6 +187,9 @@ a {
   border-bottom: 1px solid #dee2e6;
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px);
+}
+.bt-0 {
+  border-top: 0;
 }
 .box-footer {
   display: flex;

@@ -35,13 +35,13 @@ function Setting(): JSX.Element {
 
   const handleOnSubmit = async (
     values: ProfilePayload,
-    formikHelpers: FormikHelpers<ProfilePayload>
+    { setErrors, setSubmitting }: FormikHelpers<ProfilePayload>
   ) => {
-    formikHelpers.setSubmitting(true);
+    setSubmitting(true);
     let payload = Object.assign({}, values);
     payload.dob = formatDate(payload.dob);
-    await dispatchEvent("UPDATE_PROFILE", payload, {}, formikHelpers.setErrors);
-    formikHelpers.setSubmitting(false);
+    await dispatchEvent("UPDATE_PROFILE", payload, {}, setErrors);
+    setSubmitting(false);
   };
 
   return (

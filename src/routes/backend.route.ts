@@ -34,6 +34,23 @@ export const BackendRoute = {
     method: FormMethod.POST,
     auth: true,
   },
+  //==========START Forget password=======
+  F_P_CHANGE: {
+    url: "/change-forget-password",
+    method: FormMethod.POST,
+    auth: true,
+  },
+  F_P_OTP_VERIFY: {
+    url: "forget-password/otp/verify",
+    method: FormMethod.POST,
+    auth: true,
+  },
+  F_P_RESEND_OTP: {
+    url: "forget-password/resend/email/otp",
+    method: FormMethod.POST,
+    auth: true,
+  },
+  //==================END=========
   USER_DETAIL: {
     url: "/user/detail?hideToken=true",
     method: FormMethod.GET,
@@ -94,6 +111,16 @@ export const BackendRoute = {
     method: FormMethod.GET,
     auth: true,
   },
+  STATE_LIST: {
+    url: "/country/{countryId}/states",
+    method: FormMethod.GET,
+    auth: true,
+  },
+  SUBURB_LIST: {
+    url: "state/{stateId}/suburbs",
+    method: FormMethod.GET,
+    auth: true,
+  },
   TRANSACTION_HISTORY: {
     url: "transaction/history",
     method: FormMethod.GET,
@@ -119,6 +146,17 @@ export const BackendRoute = {
   TODAY_RATE_V2: {
     url: "todayRate",
     method: FormMethod.GET,
+    auth: true,
+  },
+
+  USER_ADDRESS_GET: {
+    url: "user-address",
+    method: FormMethod.GET,
+    auth: true,
+  },
+  USER_ADDRESS_POST: {
+    url: "user-address",
+    method: FormMethod.POST,
     auth: true,
   },
 };

@@ -19,12 +19,11 @@ import { dispatchEvent } from "../../actions";
 const ChangePassword = () => {
   const handleOnSubmit = async (
     values: ChangePasswordPayload,
-    formikHelpers: FormikHelpers<ChangePasswordPayload>
+    { setSubmitting, setErrors }: FormikHelpers<ChangePasswordPayload>
   ) => {
-    console.log(values);
-    formikHelpers.setSubmitting(true);
-    await dispatchEvent("CHANGE_PASSWORD", values, {}, formikHelpers.setErrors);
-    formikHelpers.setSubmitting(false);
+    setSubmitting(true);
+    await dispatchEvent("CHANGE_PASSWORD", values, {}, setErrors);
+    setSubmitting(false);
   };
 
   return (
