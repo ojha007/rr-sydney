@@ -19,7 +19,9 @@ import { useEffect, useState } from "react";
 import { IOption, IOptionV2, ISuburb } from "../../interfaces/common";
 
 const UserAddress = () => {
-  const [address, setUserAddress] = useState([]);
+  const [address, setUserAddress] = useState<UserAddressPayload>(
+    UserAddressInitialValues
+  );
   const [countries, setCountries] = useState<IOption[]>([]);
   const [states, setStates] = useState<IOptionV2[]>([]);
   const [suburbs, setSuburbs] = useState<ISuburb[]>([]);
@@ -47,7 +49,6 @@ const UserAddress = () => {
     values: UserAddressPayload,
     { setSubmitting, setErrors }: FormikHelpers<UserAddressPayload>
   ) => {
-    console.log(values);
     setSubmitting(true);
     await dispatchEvent("USER_ADDRESS_POST", values, {}, setErrors);
     setSubmitting(false);
@@ -60,7 +61,7 @@ const UserAddress = () => {
         onSubmit={(values, formikHelpers) =>
           handleOnSubmit(values, formikHelpers)
         }
-        initialValues={UserAddressInitialValues}
+        initialValues={address}
         validationSchema={UserAddressSchema}
       >
         {({
@@ -81,6 +82,7 @@ const UserAddress = () => {
                     type="select"
                     name="country_id"
                     defaultValue={13}
+                    value={values.country_id}
                     errors={errors}
                     touched={touched}
                     onChange={(e) => {
@@ -115,6 +117,7 @@ const UserAddress = () => {
                     type="select"
                     name="state_id"
                     errors={errors}
+                    value={values.state_id}
                     touched={touched}
                     onChange={(e) => {
                       handleOnStateChange(e.target.value);
@@ -145,6 +148,7 @@ const UserAddress = () => {
                     type="select"
                     name="suburb_id"
                     errors={errors}
+                    value={values.suburb_id}
                     touched={touched}
                     onChange={(e: any) => {
                       let c =
@@ -206,6 +210,7 @@ const UserAddress = () => {
                     type="text"
                     name="street"
                     errors={errors}
+                    value={values.street}
                     touched={touched}
                     onChange={handleChange}
                     invalid={errors.street && touched.street ? true : false}

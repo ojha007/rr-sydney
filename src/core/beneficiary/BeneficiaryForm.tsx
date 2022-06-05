@@ -35,30 +35,31 @@ const BeneficiaryForm = (props: BeneficiaryFormInterface) => {
 
   const handleOnSubmit = async (
     values: BeneficiaryPayload,
-    formikHelpers: FormikHelpers<BeneficiaryPayload>
+    { setErrors, setSubmitting, resetForm }: FormikHelpers<BeneficiaryPayload>
   ) => {
-    formikHelpers.setSubmitting(true);
+    setSubmitting(true);
     let response;
     //UPDATE
     if (values.id) {
+      let id = values.id;
       response = await dispatchEvent(
         "BENEFICIARY_UPDATE",
         values,
-        { id: values.id },
-        formikHelpers.setErrors
+        { id },
+        setErrors
       );
     } else {
       response = await dispatchEvent(
         "BENEFICIARY_CREATE",
         values,
         {},
-        formikHelpers.setErrors
+        setErrors
       );
     }
-    formikHelpers.setSubmitting(false);
+    setSubmitting(false);
     if (response.success) {
       props.handleClose();
-      formikHelpers.resetForm();
+      resetForm();
       props.fetchAllBeneficiaries();
     }
   };
