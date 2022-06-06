@@ -25,12 +25,22 @@ const UserAddress = () => {
   const [countries, setCountries] = useState<IOption[]>([]);
   const [states, setStates] = useState<IOptionV2[]>([]);
   const [suburbs, setSuburbs] = useState<ISuburb[]>([]);
+
   useEffect(() => {
     Promise.all([
       dispatchEvent("USER_ADDRESS_GET", {}),
       dispatchEvent("MASTER_DATA", {}, { type: "countries", user: "sender" }),
     ]).then((response) => {
-      setUserAddress(response[0].data);
+      let userAddress = response[0].data;
+      setUserAddress(userAddress ?? []);
+      if (userAddress.country_id) {
+        handleOnCountryChange(userAddress.country_id);
+        handleOnStateChange(userAddress.state_id);
+        setUserAddress((prev) => ({
+          ...prev,
+          postal_code: userAddress.post_code,
+        }));
+      }
       setCountries(response[1].data);
     });
   }, []);
@@ -81,8 +91,8 @@ const UserAddress = () => {
                   <Input
                     type="select"
                     name="country_id"
-                    defaultValue={13}
-                    value={values.country_id}
+                    value={values.country_id ?? 13}
+                    disabled
                     errors={errors}
                     touched={touched}
                     onChange={(e) => {
@@ -94,6 +104,7 @@ const UserAddress = () => {
                     }
                     onBlur={handleBlur}
                   >
+                    <option>-----SELECT STATE----</option>
                     {countries.map((country: IOption) => {
                       return (
                         <option key={country.id} value={country.id}>
@@ -102,7 +113,6 @@ const UserAddress = () => {
                       );
                     })}
                   </Input>
-
                   {errors.country_id && touched.country_id ? (
                     <FormFeedback>{errors.country_id}</FormFeedback>
                   ) : null}
@@ -122,6 +132,7 @@ const UserAddress = () => {
                     onChange={(e) => {
                       handleOnStateChange(e.target.value);
                       setFieldValue("state_id", e.target.value);
+                      setFieldValue("postal_code", "");
                     }}
                     invalid={errors.state_id && touched.state_id ? true : false}
                     onBlur={handleBlur}
@@ -189,11 +200,10 @@ const UserAddress = () => {
                     type="text"
                     readOnly
                     name="postal_code"
-                    value={values.postal_code}
+                    defaultValue={values.postal_code}
                     errors={errors}
-                    onChange={handleChange}
                     invalid={errors.postal_code ? true : false}
-                    onBlur={handleBlur}
+                    disabled
                   />
 
                   {errors.postal_code && touched.postal_code ? (

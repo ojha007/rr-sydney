@@ -12,6 +12,7 @@ import {
   Row,
 } from "reactstrap";
 import { dispatchEvent } from "../../actions";
+import AuthHeaderLogo from "../../components/AuthHeaderLogo";
 import { LoggedInUser } from "../../interfaces/User";
 import { ForgetPasswordOtpPayload } from "../../schema/auth.schema";
 import TokenService from "../../services/TokenService";
@@ -130,6 +131,7 @@ export default function Otp() {
     <Container fluid className="auth-screen h-100">
       <Row className="justify-content-center align-items-center h-100">
         <Col md="3">
+          <AuthHeaderLogo />
           <Card className="background-snow">
             <CardHeader>
               <CardTitle className="text-center">
