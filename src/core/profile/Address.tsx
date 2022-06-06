@@ -245,7 +245,7 @@ const UserAddress = () => {
                 <Button
                   type="submit"
                   loading={+isSubmitting}
-                  text="Change"
+                  text={address?.country_id ? "Update" : "Save"}
                   color="primary"
                   className="btn-sm btn-flat "
                 />
