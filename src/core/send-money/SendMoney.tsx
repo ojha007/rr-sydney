@@ -57,6 +57,7 @@ function Render() {
   const [todayRate, setTodayRate] = useState<TodayRateInterface>();
   const [uploadedFiles, setUploadedFiles] = useState<FileInterface[]>([]);
   const [user, setUser] = useState<LoggedInUser>();
+  const [totalPayable, setTotalPayable] = useState<number>(0);
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -113,6 +114,7 @@ function Render() {
   ) => {
     let sending_amount = e.target.value;
     setFieldValue("sending_amount", sending_amount);
+    setTotalPayable(+sending_amount + 10);
     let rates = todayRate?.rate ?? [];
     let rate: RateInterface | undefined = rates.find(
       (rate) => Number(sending_amount) >= rate["min_range"]
@@ -287,6 +289,43 @@ function Render() {
                       <FormFeedback>{errors.receiving_amount}</FormFeedback>
                     ) : null}
                   </FormGroup>
+                </Col>
+              </Row>
+              <Row style={{ backgroundColor: "aliceblue" }} className="p-2">
+                <Col>
+                  <p>
+                    Please transfer the balance on the following account and
+                    upload the receipt of payment
+                  </p>
+                  <p className="text-danger">Strictly No cash deposit.</p>
+                  <p>
+                    Please write sender name on reference or description while
+                    transferring to our account
+                  </p>
+                  <table className="table table-stripped">
+                    <thead>
+                      <tr>
+                        <th>Account Name</th>
+                        <td>Registered Remit Sydney</td>
+                      </tr>
+                      <tr>
+                        <th>BSB</th>
+                        <td>484799</td>
+                      </tr>
+                      <tr>
+                        <th>Account No.</th>
+                        <td>054847695</td>
+                      </tr>
+                      <tr
+                        style={{
+                          backgroundColor: "#3989ba",
+                        }}
+                      >
+                        <th>Total Payable:</th>
+                        <td>{totalPayable}</td>
+                      </tr>
+                    </thead>
+                  </table>
                 </Col>
               </Row>
               <Row>
