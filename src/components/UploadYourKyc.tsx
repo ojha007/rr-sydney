@@ -10,7 +10,7 @@ const UploadYourKyc = (props: UploadYourKycI) => {
     <>
       <Alert color="danger mt-3 mx-0">
         {props.user.kycMessage}
-        <Link className="alert-link text-underline" to="/dashboard/profile">
+        <Link className="alert-link text-underline" to="/dashboard/user/kyc">
           &nbsp; Click here ?
         </Link>
       </Alert>
