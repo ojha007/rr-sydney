@@ -42,6 +42,9 @@ export const dispatchEvent = async (
     if (action === "LOGIN") {
       TokenService.setToken(response.data);
     }
+    if (action === "F_P_RESEND_OTP" || action === "RESEND_EMAIL_OTP") {
+      toast.success(response.message);
+    }
   } else {
     if (response.message) {
       toast.error(response.message);

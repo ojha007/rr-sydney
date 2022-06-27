@@ -102,7 +102,7 @@ export default function Otp() {
       let user: LoggedInUser = TokenService.getAuthUser();
       user.isEmailVerified = true;
       await TokenService.setAuthUser(user);
-      navigate("/dashboard/profile");
+      navigate("dashboard/user/kyc");
     }
   };
 
