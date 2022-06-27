@@ -35,7 +35,7 @@ export default function Login() {
     formikHelpers.setSubmitting(false);
     if (r.success) {
       let user: LoggedInUser = TokenService.getAuthUser();
-      if (user.isKycVerified !== "VERIFIED") navigate("/dashboard/profile");
+      if (user.isKycVerified !== "VERIFIED") navigate("/dashboard/user/kyc");
       if (!user.address) navigate("/dashboard/user/address");
       navigate("/dashboard");
     }
