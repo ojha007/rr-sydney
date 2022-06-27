@@ -102,7 +102,7 @@ export default function Otp() {
       let user: LoggedInUser = TokenService.getAuthUser();
       user.isEmailVerified = true;
       await TokenService.setAuthUser(user);
-      navigate("dashboard/user/kyc");
+      navigate("/dashboard");
     }
   };
 
@@ -166,6 +166,7 @@ export default function Otp() {
                       onClick={resendOtp}
                       className="text-primary"
                       role="button"
+                      style={{ cursor: "pointer" }}
                     >
                       Resend OTP
                     </span>
